@@ -1,0 +1,12 @@
+apiVersion: cache.example.com/v1alpha1
+kind: Ok21399
+metadata:
+  labels:
+    app.kubernetes.io/name: ok21399
+    app.kubernetes.io/instance: ok21399-sample
+    app.kubernetes.io/part-of: nginx-ok2-1399
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: nginx-ok2-1399
+  name: ok21399-sample
+spec:
+  # TODO(user): Add fields here

@@ -1,0 +1,89 @@
+mkdir nginx-ok1-1399
+cd nginx-ok1-1399
+operator-sdk init --plugins=ansible --domain example.com
+operator-sdk create api --group cache --version v1alpha1 --kind Ok11399 --generate-role
+cat roles/ok11399/defaults/main.yml
+vi roles/ok11399/defaults/main.yml
+cat roles/ok11399/tasks/main.yml
+vi roles/ok11399/tasks/main.yml
+(config quay token)
+docker buildx build . --push --platform linux/amd64,linux/arm64 --tag quay.io/olmqe/nginx-operator-base:vok11399
+make bundle IMG=quay.io/olmqe/nginx-operator-base:vok11399
+vi manifests/nginx-ok1-1399.clusterserviceversion.yaml (installmode)
+
+cd 0.0.1
+rm -fr tests metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok1-1399 -c alpha -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.1 
+
+kuiwang@Kuis-MacBook-Pro 0.0.1 % cd ../
+kuiwang@Kuis-MacBook-Pro nginx-ok1-1399 % cp -fr 0.0.1 0.0.2
+kuiwang@Kuis-MacBook-Pro nginx-ok1-1399 % cp -fr 0.0.1 0.0.3
+kuiwang@Kuis-MacBook-Pro nginx-ok1-1399 % cp -fr 0.0.1 0.0.4
+kuiwang@Kuis-MacBook-Pro nginx-ok1-1399 % cp -fr 0.0.1 0.0.5
+
+(modify replace for each csv file)
+
+
+cd 0.0.2
+rm -fr bundle.Dockerfile metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok1-1399 -c alpha -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.2
+
+cd ../0.0.3
+rm -fr bundle.Dockerfile metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok1-1399 -c beta -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.3
+
+cd ../0.0.4
+rm -fr bundle.Dockerfile metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok1-1399 -c alpha -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.4
+
+
+cd ../0.0.5
+rm -fr bundle.Dockerfile metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok1-1399 -c beta -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.5
+
+mkdir index
+cd index 
+
+kuiwang@Kuis-MacBook-Pro index % opm index add --bundles quay.io/olmqe/nginx-ok-bundle:v1-0.0.1,quay.io/olmqe/nginx-ok-bundle:v1-0.0.2,quay.io/olmqe/nginx-ok-bundle:v1-0.0.3,quay.io/olmqe/nginx-ok-bundle:v1-0.0.4,quay.io/olmqe/nginx-ok-bundle:v1-0.0.5 --generate
+WARN[0000] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+INFO[0000] building the index                            bundles="[quay.io/olmqe/nginx-ok-bundle:v1-0.0.1 quay.io/olmqe/nginx-ok-bundle:v1-0.0.2 quay.io/olmqe/nginx-ok-bundle:v1-0.0.3 quay.io/olmqe/nginx-ok-bundle:v1-0.0.4 quay.io/olmqe/nginx-ok-bundle:v1-0.0.5]"
+INFO[0005] Could not find optional dependencies file     file=bundle_tmp556682731/metadata load=annotations with=./bundle_tmp556682731
+INFO[0005] Could not find optional properties file       file=bundle_tmp556682731/metadata load=annotations with=./bundle_tmp556682731
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp3215373535/metadata load=annotations with=./bundle_tmp3215373535
+INFO[0009] Could not find optional properties file       file=bundle_tmp3215373535/metadata load=annotations with=./bundle_tmp3215373535
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp2808996599/metadata load=annotations with=./bundle_tmp2808996599
+INFO[0012] Could not find optional properties file       file=bundle_tmp2808996599/metadata load=annotations with=./bundle_tmp2808996599
+INFO[0015] Could not find optional dependencies file     file=bundle_tmp1410401385/metadata load=annotations with=./bundle_tmp1410401385
+INFO[0015] Could not find optional properties file       file=bundle_tmp1410401385/metadata load=annotations with=./bundle_tmp1410401385
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp686691400/metadata load=annotations with=./bundle_tmp686691400
+INFO[0019] Could not find optional properties file       file=bundle_tmp686691400/metadata load=annotations with=./bundle_tmp686691400
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp1410401385/metadata load=annotations with=./bundle_tmp1410401385
+INFO[0019] Could not find optional properties file       file=bundle_tmp1410401385/metadata load=annotations with=./bundle_tmp1410401385
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp686691400/metadata load=annotations with=./bundle_tmp686691400
+INFO[0019] Could not find optional properties file       file=bundle_tmp686691400/metadata load=annotations with=./bundle_tmp686691400
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp556682731/metadata load=annotations with=./bundle_tmp556682731
+INFO[0019] Could not find optional properties file       file=bundle_tmp556682731/metadata load=annotations with=./bundle_tmp556682731
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp3215373535/metadata load=annotations with=./bundle_tmp3215373535
+INFO[0019] Could not find optional properties file       file=bundle_tmp3215373535/metadata load=annotations with=./bundle_tmp3215373535
+INFO[0019] Could not find optional dependencies file     file=bundle_tmp2808996599/metadata load=annotations with=./bundle_tmp2808996599
+INFO[0019] Could not find optional properties file       file=bundle_tmp2808996599/metadata load=annotations with=./bundle_tmp2808996599
+INFO[0019] Generating dockerfile                         bundles="[quay.io/olmqe/nginx-ok-bundle:v1-0.0.1 quay.io/olmqe/nginx-ok-bundle:v1-0.0.2 quay.io/olmqe/nginx-ok-bundle:v1-0.0.3 quay.io/olmqe/nginx-ok-bundle:v1-0.0.4 quay.io/olmqe/nginx-ok-bundle:v1-0.0.5]"
+INFO[0019] writing dockerfile: index.Dockerfile          bundles="[quay.io/olmqe/nginx-ok-bundle:v1-0.0.1 quay.io/olmqe/nginx-ok-bundle:v1-0.0.2 quay.io/olmqe/nginx-ok-bundle:v1-0.0.3 quay.io/olmqe/nginx-ok-bundle:v1-0.0.4 quay.io/olmqe/nginx-ok-bundle:v1-0.0.5]"
+
+
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f index.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-1
+mkdir fbc
+opm migrate quay.io/olmqe/nginx-ok-index:v1399-1 fbc -o yaml
+cd fbc
+opm generate dockerfile nginx-ok1-1399
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f nginx-ok1-1399.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-1-fbc
+
+
