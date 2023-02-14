@@ -1,0 +1,71 @@
+cp -fr 0.0.2 0.0.2-dep
+cd 0.0.2-dep
+vi metadata/properties.yaml
+kuiwang@Kuis-MacBook-Pro 0.0.2-dep % cat metadata/properties.yaml
+properties:
+- type: olm.deprecated
+  value: {}
+rm -fr bundle.Dockerfile metadata/annotations.yaml
+opm alpha bundle generate -d manifests -p nginx-ok2-1399 -c alpha -e alpha
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v2-0.0.2-dep
+
+cd ../../nginx-ok-index
+cd run1399
+mkdir fbc-dep
+cd fbc-dep
+vi basic-ok2.yaml
+kuiwang@Kuis-MacBook-Pro fbc-dep % cat basic-ok2.yaml 
+---
+schema: olm.package
+name: nginx-ok2-1399
+defaultChannel: alpha
+---
+schema: olm.channel
+package: nginx-ok2-1399
+name: alpha
+entries:
+- name: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.2
+  replaces: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.4
+  replaces: nginx-ok2-1399.v0.0.2
+---
+schema: olm.channel
+package: nginx-ok2-1399
+name: beta
+entries:
+- name: nginx-ok2-1399.v0.0.3
+- name: nginx-ok2-1399.v0.0.5
+  replaces: nginx-ok2-1399.v0.0.3
+---
+schema: olm.bundle
+image: quay.io/olmqe/nginx-ok-bundle:v2-0.0.1
+---
+schema: olm.bundle
+image: quay.io/olmqe/nginx-ok-bundle:v2-0.0.2-dep
+---
+schema: olm.bundle
+image: quay.io/olmqe/nginx-ok-bundle:v2-0.0.3
+---
+schema: olm.bundle
+image: quay.io/olmqe/nginx-ok-bundle:v2-0.0.4
+---
+schema: olm.bundle
+image: quay.io/olmqe/nginx-ok-bundle:v2-0.0.5
+
+
+opm alpha render-veneer basic ./basic-ok2.yaml -o yaml > catalogs.yaml
+cd .../multi-arch-operators/nginx-ok-index/run1399/deprecate/fbc
+kuiwang@Kuis-MacBook-Pro fbc % pwd
+.../multi-arch-operators/nginx-ok-index/run1399/deprecate/fbc
+kuiwang@Kuis-MacBook-Pro fbc % cp -fr dep .../multi-arch-operators/nginx-ok-index/run1399/fbc-dep/
+kuiwang@Kuis-MacBook-Pro fbc % cd .../multi-arch-operators/nginx-ok-index/run1399/fbc-dep/
+rm -fr dep/nginx-ok2-1399/catalog.yaml
+cp catalogs.yaml dep/nginx-ok2-1399/catalog.yaml
+
+
+opm generate dockerfile dep
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f dep.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-deprecate-nomigrate
+
+
+
