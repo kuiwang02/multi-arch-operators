@@ -1,0 +1,38 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: nginx-ok1-1399.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions: {}
+  description: nginx-ok1-1399
+  displayName: nginx-ok1-1399
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - nginx-ok1-1399
+  links:
+  - name: Nginx Ok1 1399
+    url: https://nginx-ok1-1399.domain
+  maturity: alpha
+  provider:
+    name: nginx-ok1-1399
+  version: 0.0.0
