@@ -5,6 +5,7 @@ cd run1399
 
 opm index add --bundles quay.io/olmqe/nginx-ok-bundle:v2-0.0.1,quay.io/olmqe/nginx-ok-bundle:v2-0.0.2,quay.io/olmqe/nginx-ok-bundle:v2-0.0.3,quay.io/olmqe/nginx-ok-bundle:v2-0.0.4,quay.io/olmqe/nginx-ok-bundle:v2-0.0.5,quay.io/olmqe/nginx-ok-bundle:v1-0.0.1,quay.io/olmqe/nginx-ok-bundle:v1-0.0.2,quay.io/olmqe/nginx-ok-bundle:v1-0.0.3,quay.io/olmqe/nginx-ok-bundle:v1-0.0.4,quay.io/olmqe/nginx-ok-bundle:v1-0.0.5 --generate
 docker buildx build . --push --platform linux/amd64,linux/arm64 -f index.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-b-sql
+docker buildx build . --push --platform linux/amd64,linux/arm64 -f index.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-sql
 
 mkdir deprecate
 cd deprecate
@@ -12,9 +13,10 @@ opm index deprecatetruncate --bundles quay.io/olmqe/nginx-ok-bundle:v2-0.0.2 --f
 docker buildx build . --push --platform linux/amd64,linux/arm64 -f index.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-sql-deprecate
 
 { to change tag name
-docker pull quay.io/olmqe/nginx-ok-index:v1399-b-sql
-docker tag quay.io/olmqe/nginx-ok-index:v1399-b-sql quay.io/olmqe/nginx-ok-index:v1399-sql
-docker push quay.io/olmqe/nginx-ok-index:v1399-sql
+#docker pull quay.io/olmqe/nginx-ok-index:v1399-b-sql
+#docker tag quay.io/olmqe/nginx-ok-index:v1399-b-sql quay.io/olmqe/nginx-ok-index:v1399-sql
+#docker push quay.io/olmqe/nginx-ok-index:v1399-sql
+#make these step obsolete because it cause multi-arch image become non-multi-arch.
 }
 
 mkdir fbc
