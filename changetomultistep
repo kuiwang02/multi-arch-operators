@@ -1,0 +1,40 @@
+
+1004  cd ../multi-arch-operators
+ 1005  ls
+ 1006  cd nginx-ok2-1399
+ 1007  ls
+ 1008  cat Dockerfile
+ 1009  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag quay.io/olmqe/nginx-operator-base:vok2-multi
+ 1010  cd ../nginx-ok1-1399
+ 1011  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag quay.io/olmqe/nginx-operator-base:vok1-multi
+
+
+1129  cd ../../0.0.5
+ 1130  mkdir tmp
+ 1131  cd tmp
+ 1132  opm alpha bundle unpack quay.io/olmqe/nginx-ok-bundle:v1-0.0.5
+ 1133  cat metadata/annotations.yaml
+ 1134  cp ../bundle.Dockerfile .
+ 1135  cat bundle.Dockerfile
+ 1136  grep -Fr "image" manifests
+ 1137  vi manifests/nginx-ok1-1399.clusterserviceversion.yaml
+ 1138  grep -Fr "image" manifests
+ 1139  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.5-multi
+ 1140  ls
+ 1141  mkdir catalog
+ 1142  opm generate dockerfile catalog
+ 1143  ls
+ 1144  vi catalog/index.yaml
+ 1145  opm render  quay.io/olmqe/nginx-ok-bundle:v1-0.0.1-multi -o yaml >> catalog/index.yaml
+ 1146  vi catalog/index.yaml
+ 1147  opm render  quay.io/olmqe/nginx-ok-bundle:v1-0.0.2-multi -o yaml >> catalog/index.yaml
+ 1148  opm render  quay.io/olmqe/nginx-ok-bundle:v1-0.0.3-multi -o yaml >> catalog/index.yaml
+ 1149  opm render  quay.io/olmqe/nginx-ok-bundle:v1-0.0.4-multi -o yaml >> catalog/index.yaml
+ 1150  opm render  quay.io/olmqe/nginx-ok-bundle:v1-0.0.5-multi -o yaml >> catalog/index.yaml
+ 1151  opm render  quay.io/olmqe/nginx-ok-bundle:v2-0.0.1-multi -o yaml >> catalog/index.yaml
+ 1152  opm render  quay.io/olmqe/nginx-ok-bundle:v2-0.0.2-multi -o yaml >> catalog/index.yaml
+ 1153  opm render  quay.io/olmqe/nginx-ok-bundle:v2-0.0.3-multi -o yaml >> catalog/index.yaml
+ 1154  opm render  quay.io/olmqe/nginx-ok-bundle:v2-0.0.4-multi -o yaml >> catalog/index.yaml
+ 1155  opm render  quay.io/olmqe/nginx-ok-bundle:v2-0.0.5-multi -o yaml >> catalog/index.yaml
+ 1156  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-multi
+
