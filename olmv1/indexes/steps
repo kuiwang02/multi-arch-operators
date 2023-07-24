@@ -1,0 +1,140 @@
+kuiwang@Kuis-MacBook-Pro indexes % pwd
+/Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/indexes
+kuiwang@Kuis-MacBook-Pro indexes % mkdir nginx-ok-v1
+kuiwang@Kuis-MacBook-Pro indexes % cd nginx-ok-v1 
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % mkdir catalog
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % opm generate dockerfile catalog
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % mkdir catalog/nginx-ok-v1test
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % opm init nginx-ok-v1test -c alpha  -o yaml > catalog/nginx-ok-v1test/index.yaml
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % 
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % cat catalog/nginx-ok-v1test/index.yaml
+---
+defaultChannel: alpha
+name: nginx-ok-v1test
+schema: olm.package
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % opm render quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1 -o yaml >> catalog/nginx-ok-v1test/index.yaml
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % cat catalog/nginx-ok-v1test/index.yaml|grep -v data                                                
+---
+defaultChannel: alpha
+name: nginx-ok-v1test
+schema: olm.package
+---
+image: quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1
+name: nginx-ok-v1test.v0.0.1
+package: nginx-ok-v1test
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Okv1test
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok-v1test
+    version: 0.0.1
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base:vokv1test
+  name: ""
+schema: olm.bundle
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % vi catalog/nginx-ok-v1test/index.yaml (add channel)
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % cat catalog/nginx-ok-v1test/index.yaml|grep -v data
+---
+defaultChannel: alpha
+name: nginx-ok-v1test
+schema: olm.package
+---
+entries:
+- name: nginx-ok-v1test.v0.0.1
+name: alpha
+package: nginx-ok-v1test
+schema: olm.channel
+---
+image: quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1
+name: nginx-ok-v1test.v0.0.1
+package: nginx-ok-v1test
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Okv1test
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok-v1test
+    version: 0.0.1
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+- type: olm.bundle.object
+  value:
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base:vokv1test
+  name: ""
+schema: olm.bundle
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % 
+
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:vokv1test     
+[+] Building 16.3s (21/21) FINISHED                                                                                                                                                                                                                                                                               
+ => [internal] load build definition from catalog.Dockerfile                                                                                                                                                                                                                                                 0.0s
+ => => transferring dockerfile: 640B                                                                                                                                                                                                                                                                         0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                                                                                            0.0s
+ => => transferring context: 2B                                                                                                                                                                                                                                                                              0.0s
+ => [linux/arm64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                                                                                                                                           1.1s
+ => [linux/s390x internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                                                                                                                                           1.0s
+ => [linux/amd64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                                                                                                                                           1.1s
+ => [linux/ppc64le internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                                                                                                                                         1.1s
+ => CACHED [linux/arm64 1/3] FROM quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                              0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                                                 0.0s
+ => CACHED [linux/ppc64le 1/3] FROM quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                            0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                                                 0.0s
+ => CACHED [linux/s390x 1/3] FROM quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                              0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                                                 0.0s
+ => CACHED [linux/amd64 1/3] FROM quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                              0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:f468bfc70b02029df2527b8f7e9c9bb82c29b57db0d4466ee6ea8ec5c5bbdd0f                                                                                                                                                                                 0.0s
+ => [internal] load build context                                                                                                                                                                                                                                                                            0.0s
+ => => transferring context: 11.15kB                                                                                                                                                                                                                                                                         0.0s
+ => [linux/arm64 2/3] ADD catalog /configs                                                                                                                                                                                                                                                                   0.1s
+ => [linux/s390x 2/3] ADD catalog /configs                                                                                                                                                                                                                                                                   0.1s
+ => [linux/ppc64le 2/3] ADD catalog /configs                                                                                                                                                                                                                                                                 0.1s
+ => [linux/amd64 2/3] ADD catalog /configs                                                                                                                                                                                                                                                                   0.1s
+ => [linux/arm64 3/3] RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]                                                                                                                                                                                                        2.6s
+ => [linux/ppc64le 3/3] RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]                                                                                                                                                                                                      2.4s
+ => [linux/s390x 3/3] RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]                                                                                                                                                                                                        2.3s
+ => [linux/amd64 3/3] RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]                                                                                                                                                                                                        1.0s
+ => exporting to image                                                                                                                                                                                                                                                                                      11.6s 
+ => => exporting layers                                                                                                                                                                                                                                                                                      0.3s 
+ => => exporting manifest sha256:98fe6506aa8b336ff17bdcb1b2bd3e90d71c3d45c4f1f53311dd0522b55c7489                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:e41d3a19eea26fe62163537afbff6b2294acba100bcb4e9fbc41d31ce03c816c                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:a46c11e818013a4ad627888c6e7751f42e2406c813cd603d43c1b6e290a9dd2d                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:9145edf97d928288778cf9dcecbd77065273641b620ad3f6cd9ad0516d19abcb                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:9460eeadc19de88c11a493ada2584f651812b5a555d9a20403201d57d0e98bb2                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:6f7b2578af29890e1da096c1760b85f8b80db711764e5e8ded48997cdb06c417                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:dba791a4dfda96a79694754cf153d74221c98b7b3134f858cfa406d8c3a15b8c                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:b119c413f526405fc5efdda0bac2d7040730d2fcf1cc79fcb47e6555f530490e                                                                                                                                                                                                              0.0s
+ => => exporting manifest list sha256:7eb61fec97851a3515ee004a383465a8a91b7c33cf3e29a174e78e07ef38adc4                                                                                                                                                                                                       0.0s
+ => => pushing layers                                                                                                                                                                                                                                                                                        6.6s
+ => => pushing manifest for quay.io/olmqe/nginx-ok-index:vokv1test@sha256:7eb61fec97851a3515ee004a383465a8a91b7c33cf3e29a174e78e07ef38adc4                                                                                                                                                                   4.7s
+ => [auth] olmqe/nginx-ok-index:pull,push token for quay.io                                                                                                                                                                                                                                                  0.0s
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1 % 
+

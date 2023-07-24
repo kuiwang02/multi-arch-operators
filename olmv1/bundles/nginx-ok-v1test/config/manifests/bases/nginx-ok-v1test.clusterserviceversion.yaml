@@ -1,0 +1,41 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: nginx-ok-v1test.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions: {}
+  description: vokv1test
+  displayName: vokv1test
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - vokv1test
+  links:
+  - name: Nginx Ok V1test
+    url: https://nginx-ok-v1test.domain
+  maintainers:
+  - email: kuiwang@redhat.com
+    name: kuiwang
+  maturity: alpha
+  provider:
+    name: vokv1test
+  version: 0.0.0

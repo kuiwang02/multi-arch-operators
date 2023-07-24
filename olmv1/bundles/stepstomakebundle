@@ -1,0 +1,123 @@
+refer to https://github.com/Xia-Zhao-rh/multi-arch-operators/blob/master/nginx-operator-24664/steps.md
+
+
+kuiwang@Kuis-MacBook-Pro bundles % mkdir nginx-ok-v1test
+kuiwang@Kuis-MacBook-Pro bundles % cd nginx-ok-v1test
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % operator-sdk init --plugins=ansible --domain example.com
+Writing kustomize manifests for you to edit...
+Next: define a resource with:
+$ operator-sdk create api
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % operator-sdk create api --group cache --version v1alpha1 --kind Okv1test --generate-role
+Writing kustomize manifests for you to edit...
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cat roles/okv1test/defaults/main.yml 
+---
+# defaults file for Okv1test
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % vi roles/okv1test/defaults/main.yml
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cat roles/okv1test/defaults/main.yml   
+---
+# defaults file for Okv1test
+size: 1
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cat roles/okv1test/tasks/main.yml 
+---
+# tasks file for Okv1test
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % vi roles/okv1test/tasks/main.yml
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cat roles/okv1test/tasks/main.yml
+---
+# tasks file for Okv1test
+- name: start nginx
+  kubernetes.core.k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ ansible_operator_meta.name }}-nginx'
+        namespace: '{{ ansible_operator_meta.namespace }}'
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            app: nginx
+        template:
+          metadata:
+            labels:
+              app: nginx
+          spec:
+            containers:
+            - name: nginx
+              image: "quay.io/openshifttest/nginx-alpine:latest
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % 
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag quay.io/olmqe/nginx-operator-base:vokv1test 
+...                                                                                                                                                                                                                                     9.5s
+ => => pushing manifest for quay.io/olmqe/nginx-operator-base:vokv1test@sha256:e3df3bb43cb8828a7bea91fc0cfa7cab8910c6a8f23b1ccb0b2070117b53e5ae                                                                                                                                                              5.7s
+ => [auth] olmqe/nginx-operator-base:pull,push token for quay.io                                                                                                                                                                                                                                             0.0s
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % 
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % make bundle IMG=quay.io/olmqe/nginx-operator-base:vokv1test
+operator-sdk generate kustomize manifests -q
+
+Display name for the operator (required): 
+> vokv1test
+
+Description for the operator (required): 
+> vokv1test
+
+Provider's name for the operator (required): 
+> vokv1test
+
+Any relevant URL for the provider name (optional): 
+> 
+
+Comma-separated list of keywords for your operator (required): 
+> vokv1test
+
+Comma-separated list of maintainers and their emails (e.g. 'name1:email1, name2:email2') (required): 
+> kuiwang:kuiwang@redhat.com
+cd config/manager && /Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/bundles/nginx-ok-v1test/bin/kustomize edit set image controller=quay.io/olmqe/nginx-operator-base:vokv1test
+/Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/bundles/nginx-ok-v1test/bin/kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 0.0.1  
+INFO[0000] Creating bundle.Dockerfile                   
+INFO[0000] Creating bundle/metadata/annotations.yaml    
+INFO[0000] Bundle metadata generated successfully       
+operator-sdk bundle validate ./bundle
+INFO[0000] All validation tests have completed successfully 
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % 
+
+
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % vi bundle/manifests/nginx-ok-v1test.clusterserviceversion.yaml (change installmode)
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cp -fr bundle 0.0.1
+kuiwang@Kuis-MacBook-Pro nginx-ok-v1test % cd 0.0.1
+kuiwang@Kuis-MacBook-Pro 0.0.1 % rm -fr tests metadata/annotations.yaml
+kuiwang@Kuis-MacBook-Pro 0.0.1 % opm alpha bundle generate -d manifests -p nginx-ok-v1test -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/bundles/nginx-ok-v1test/0.0.1/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/bundles/nginx-ok-v1test/0.0.1 
+kuiwang@Kuis-MacBook-Pro 0.0.1 % docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1          
+[+] Building 11.7s (7/13)                                                                                                                                                                                                                                                                                         
+ => [internal] load build definition from bundle.Dockerfile                                                                                                                                                                                                                                                  0.0s
+ => => transferring dockerfile: 518B                                                                                                                                                                                                                                                                         0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                                                                                            0.0s
+ => => transferring context: 2B                                                                                                                                                                                                                                                                              0.0s
+ => [internal] load build context                                                                                                                                                                                                                                                                            0.0s
+ => => transferring context: 11.01kB                                                                                                                                                                                                                                                                         0.0s
+ => [linux/s390x 1/2] COPY manifests /manifests/                                                                                                                                                                                                                                                             0.0s
+ => [linux/s390x 2/2] COPY metadata /metadata/                                                                                                                                                                                                                                                               0.0s
+ => exporting to image                                                                                                                                                                                                                                                                                      11.2s
+ => => exporting layers                                                                                                                                                                                                                                                                                      0.1s
+ => => exporting manifest sha256:50dd9b88dbdd91d6247370af5c2449e10e6345b497362a076b59b4634528cf9c                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:59ae33dcfb71f35e0d3508a7b06602b12949003bfcaebdbfecc38ceb14a89807                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:d1995229c64b11d0d5bb988f35f23b7740fd6bc4ea29f9415ca90d880284ca9d                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:3fbf7ae2fe595b70945735805ccad27964c506573bd4512bd9dc66d3225ddb2c                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:a66b5cdc7ac9369e1a90f8da8bc2563ec8bb7854a9cd5b06f95142387123aaa8                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:a5224bec1e16406dae736ac4f2174eb36229af22a5ddf4297ac062d74b0dcd69                                                                                                                                                                                                              0.0s
+ => => exporting manifest sha256:b73678879b8d01feb7ad6e92456c877275a7eba4c484a08a5a075219ad5a83f0                                                                                                                                                                                                            0.0s
+ => => exporting config sha256:7b7cf88222084f2afe97d96fce2464692642e63aaf58430afcbd05e07f930d94                                                                                                                                                                                                              0.0s
+ => => exporting manifest list sha256:cccd4e6d00c02b0d28375f2916d1f1089ed42598565a4729f5d0613a96be186d                                                                                                                                                                                                       0.0s
+ => => pushing layers                                                                                                                                                                                                                                                                                        6.3s
+ => => pushing manifest for quay.io/olmqe/nginx-ok-bundle:v1test-0.0.1@sha256:cccd4e6d00c02b0d28375f2916d1f1089ed42598565a4729f5d0613a96be186d                                                                                                                                                               4.8s
+ => [auth] olmqe/nginx-ok-bundle:pull,push token for quay.io                                                                                                                                                                                                                                                 0.0s
+kuiwang@Kuis-MacBook-Pro 0.0.1 % 
+
+
+
