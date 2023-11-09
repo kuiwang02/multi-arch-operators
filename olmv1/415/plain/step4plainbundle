@@ -1,0 +1,16 @@
+1, cd olmv1/415/plain
+2, make bundle direcotry
+mkdir hello-openshift-bundle
+3, cd hello-openshift-bundle
+4, mkdir manifests
+5, cd manifests
+6, put the resource yaml file here
+manifests % ls
+01_namespace.yaml	02_pod.yaml
+7, cd ..
+8, make dockerfile 
+hello-openshift-bundle % cat Dockerfile.plainbundle 
+FROM scratch
+COPY manifests /manifests
+9, build images
+docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f Dockerfile.plainbundle -t quay.io/olmqe/olmv1-bundle:plain-pod-caseid
