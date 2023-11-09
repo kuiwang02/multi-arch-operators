@@ -1,0 +1,12 @@
+apiVersion: cache.example.com/v1alpha1
+kind: Openv1caseid
+metadata:
+  labels:
+    app.kubernetes.io/name: openv1caseid
+    app.kubernetes.io/instance: openv1caseid-sample
+    app.kubernetes.io/part-of: hello-openshift-bundle
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: hello-openshift-bundle
+  name: openv1caseid-sample
+spec:
+  # TODO(user): Add fields here

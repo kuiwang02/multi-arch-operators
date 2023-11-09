@@ -1,0 +1,16 @@
+1, mkdir registry && cd registry
+2, mkdir hello-openshift-bundle && cd hello-openshift-bundle
+3, operator-sdk init --plugins=ansible --domain example.com
+4, operator-sdk create api --group cache --version v1alpha1 --kind Openv1caseid --generate-role
+5, refer to https://github.com/kuiwang02/multi-arch-operators/blob/master/olmv1/bundles/stepstomakebundle
+   to modify the roles/openv1caseid/defaults/main.yml
+   roles/openv1caseid/tasks/main.yml
+
+6, docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x --tag quay.io/olmqe/olmv1bundle:base  
+7, make bundle IMG=quay.io/olmqe/olmv1bundle:base
+8, vi bundle/manifests/hello-openshift-bundle.clusterserviceversion.yaml (modify install mode)
+9, cp -fr bundle 0.0.1
+10, cd 0.0.1
+11, rm -fr tests metadata/annotations.yaml
+12, opm alpha bundle generate -d manifests -p open-caseid-v1test -c alpha -e alpha
+13, docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/olmv1bundle:registry-open-caseid-001 

@@ -1,0 +1,27 @@
+# permissions for end users to view openv1caseids.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: openv1caseid-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: hello-openshift-bundle
+    app.kubernetes.io/part-of: hello-openshift-bundle
+    app.kubernetes.io/managed-by: kustomize
+  name: openv1caseid-viewer-role
+rules:
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv1caseids
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv1caseids/status
+  verbs:
+  - get
