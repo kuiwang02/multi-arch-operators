@@ -13,4 +13,4 @@ hello-openshift-bundle % cat Dockerfile.plainbundle
 FROM scratch
 COPY manifests /manifests
 9, build images
-docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f Dockerfile.plainbundle -t quay.io/olmqe/olmv1-bundle:plain-pod-caseid
+docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f Dockerfile.plainbundle -t quay.io/olmqe/olmv1bundle:plain-pod-caseid

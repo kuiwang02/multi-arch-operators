@@ -4,14 +4,14 @@ metadata:
   labels:
     olmv1: hello-openshift
   name: hello-openshift
-  namespace: olmv1-hello-caseid
+  namespace: olmv1-imagepullbackof
 spec:
   containers:
   - command:
       - sh
       - -c
       - "sleep 1800"
-    image: quay.io/olmqe/hello-openshift:1.2.0
+    image: quay.io/olmqe/hello-openshift:1.2.notexisting
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:
