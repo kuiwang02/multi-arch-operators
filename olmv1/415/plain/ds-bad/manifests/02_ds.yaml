@@ -1,0 +1,23 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: test
+  namespace: olmv1-ds-good
+spec:
+  selector:
+    matchLabels:
+      app: olmv1ds
+  template:
+    metadata:
+      labels:
+        app: olmv1ds
+    spec:
+      containers:
+      - name: olmv1ds
+        command:
+          - sh
+          - -c
+          - "sleep 300"
+        imagePullPolicy: IfNotPresent
+        image: quay.io/olmqe/hello-openshift:1.2.0no
+
