@@ -1,0 +1,27 @@
+# permissions for end users to view openv168903s.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: openv168903-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: dpunhealthy
+    app.kubernetes.io/part-of: dpunhealthy
+    app.kubernetes.io/managed-by: kustomize
+  name: openv168903-viewer-role
+rules:
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv168903s
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv168903s/status
+  verbs:
+  - get

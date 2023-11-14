@@ -1,0 +1,31 @@
+# permissions for end users to edit openv168903s.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: openv168903-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: dpunhealthy
+    app.kubernetes.io/part-of: dpunhealthy
+    app.kubernetes.io/managed-by: kustomize
+  name: openv168903-editor-role
+rules:
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv168903s
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cache.example.com
+  resources:
+  - openv168903s/status
+  verbs:
+  - get

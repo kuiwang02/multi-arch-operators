@@ -1,0 +1,12 @@
+apiVersion: cache.example.com/v1alpha1
+kind: Openv168903
+metadata:
+  labels:
+    app.kubernetes.io/name: openv168903
+    app.kubernetes.io/instance: openv168903-sample
+    app.kubernetes.io/part-of: dpunhealthy
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dpunhealthy
+  name: openv168903-sample
+spec:
+  # TODO(user): Add fields here

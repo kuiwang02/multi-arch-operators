@@ -1,0 +1,23 @@
+---
+# tasks file for Openv168903
+- name: start open
+  kubernetes.core.k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ ansible_operator_meta.name }}-open'
+        namespace: '{{ ansible_operator_meta.namespace }}'
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            app: open
+        template:
+          metadata:
+            labels:
+              app: open
+          spec:
+            containers:
+            - name: open
+              image: "quay.io/olmqe/hello-openshift:1.2.0
