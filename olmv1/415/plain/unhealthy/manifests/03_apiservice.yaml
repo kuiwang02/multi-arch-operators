@@ -1,0 +1,13 @@
+kind: APIService
+apiVersion: apiregistration.k8s.io/v1
+metadata:
+  name: v1.olmv1.bar.com
+spec:
+  group: olmv1.bar.com
+  groupPriorityMinimum: 2000
+  service:
+    name: olmv1
+    namespace: bar
+    port: 5443
+  version: v1
+  versionPriority: 15

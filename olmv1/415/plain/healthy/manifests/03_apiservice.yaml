@@ -1,0 +1,9 @@
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: olmv1gd.aadpodidentity.k8s.io
+spec:
+  group: aadpodidentity.k8s.io
+  groupPriorityMinimum: 1000
+  version: olmv1gd
+  versionPriority: 100

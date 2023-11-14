@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bd-healthy
+  namespace: olmv1-bd-healthy
+spec:
+  serviceName: olmv1-statefulset
+  replicas: 3
+  selector:
+    matchLabels:
+      app: olmv1-statefulset
+  template:
+    metadata:
+      labels:
+        app: olmv1-statefulset
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: olmv1ds
+          command:
+            - sh
+            - -c
+            - "sleep 300"
+          image: quay.io/olmqe/hello-openshift:1.2.0

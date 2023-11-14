@@ -1,0 +1,22 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: bd-healthy
+  namespace: olmv1-68903-healthy
+spec:
+  selector:
+    matchLabels:
+      app: bd-healthy
+  template:
+    metadata:
+      labels:
+        app: bd-healthy
+    spec:
+      containers:
+      - name: bd-healthy
+        command:
+          - sh
+          - -c
+          - "sleep 300"
+        imagePullPolicy: IfNotPresent
+        image: quay.io/olmqe/hello-openshift:1.2.0
