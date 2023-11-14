@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: olmv1-rs
+  namespace: olmv1-rs-bad
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: olmv1-rs
+  template:
+    metadata:
+      labels:
+        app: olmv1-rs
+    spec:
+      serviceAccountName: olmv1-rs
+      containers:
+      - name: olmv1-rs
+        command:
+          - sh
+          - -c
+          - "sleep 300"
+        image: quay.io/olmqe/hello-openshift:1.2.0
