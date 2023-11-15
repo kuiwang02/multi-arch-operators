@@ -1,0 +1,13 @@
+kind: APIService
+apiVersion: apiregistration.k8s.io/v1
+metadata:
+  name: v68903.foos.bar.com
+spec:
+  group: foos.bar.com
+  groupPriorityMinimum: 2000
+  service:
+    name: foo
+    namespace: bar
+    port: 5443
+  version: v68903
+  versionPriority: 15

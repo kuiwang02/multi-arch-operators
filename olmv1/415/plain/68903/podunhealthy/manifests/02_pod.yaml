@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    olmv1: hello-openshift
+  name: hello-68903
+  namespace: olmv1-68903-pod-unhealthy
+spec:
+  containers:
+  - command:
+      - sh
+      - -c
+      - "sleep 1800"
+    image: quay.io/olmqe/hello-openshift:1.2.notexisting
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+        privileged: false
+      seccompProfile:
+        type: RuntimeDefault
+    name: hello-68903
+
