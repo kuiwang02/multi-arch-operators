@@ -5,7 +5,7 @@ metadata:
   namespace: olmv1-68903-ss-unhealthy
 spec:
   serviceName: olmv1-statefulset
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: olmv1-statefulset

@@ -4,7 +4,7 @@ metadata:
   name: olmv1-rs
   namespace: olmv1-68903-rs-unhealthy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: olmv1-rs
