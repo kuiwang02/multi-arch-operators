@@ -1,0 +1,34 @@
+{
+    "schema": "olm.package",
+    "name": "olmv1-68903-healthy",
+    "defaultChannel": "alpha"
+}
+{
+    "schema": "olm.bundle",
+    "name": "olmv1-68903-healthy.v0.0.1",
+    "package": "olmv1-68903-healthy",
+    "image": "quay.io/olmqe/olmv1bundle:plain-68903-healthy",
+    "properties": [
+        {
+            "type": "olm.package",
+            "value": {
+            "packageName": "olmv1-68903-healthy",
+            "version": "0.0.1"
+            }
+        },
+        {
+            "type": "olm.bundle.mediatype",
+            "value": "plain+v0"
+        }
+  ]
+}
+{
+    "schema": "olm.channel",
+    "name": "alpha",
+    "package": "olmv1-68903-healthy",
+    "entries": [
+        {
+            "name": "olmv1-68903-healthy.v0.0.1"
+        }
+    ]
+}

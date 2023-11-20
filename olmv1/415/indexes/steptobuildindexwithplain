@@ -1,0 +1,208 @@
+kuiwang@Kuis-MacBook-Pro 415 % mkdir indexes
+kuiwang@Kuis-MacBook-Pro 415 % cd indexes 
+kuiwang@Kuis-MacBook-Pro indexes % ls
+kuiwang@Kuis-MacBook-Pro indexes % mkdir 68903
+kuiwang@Kuis-MacBook-Pro indexes % cd 68903 
+kuiwang@Kuis-MacBook-Pro 68903 % ls
+kuiwang@Kuis-MacBook-Pro 68903 % pwd
+/Users/kuiwang/GoProject/go-origin/src/github.com/openshift/multi-arch-operators/olmv1/415/indexes/68903
+kuiwang@Kuis-MacBook-Pro 68903 % mkdir index
+kuiwang@Kuis-MacBook-Pro 68903 % opm generate dockerfile index 
+kuiwang@Kuis-MacBook-Pro 68903 % ls
+index			index.Dockerfile
+kuiwang@Kuis-MacBook-Pro 68903 % cat index.Dockerfile 
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs", "--cache-dir=/tmp/cache"]
+
+# Copy declarative config root into image at /configs and pre-populate serve cache
+ADD index /configs
+RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+kuiwang@Kuis-MacBook-Pro 68903 % 
+
+kuiwang@Kuis-MacBook-Pro 68903 % opm init olmv1-68903-healthy --output yaml > index/healthy.yaml
+### vi index/healthy.yaml 
+kuiwang@Kuis-MacBook-Pro 68903 % cat index/healthy.yaml 
+---
+schema: olm.package
+name: olm-68903-healthy
+defaultChannel: alpha
+---
+schema: olm.bundle
+name: olm-68903-healthy.v1.0.1
+package: olm-68903-healthy
+image: quay.io/olmqe/olmv1bundle:plain-68903-healthy
+properties:
+- type: olm.package
+  value:
+    packageName: olm-68903-healthy
+    version: 1.0.1
+- type: olm.bundle.mediatype
+  value: plain+v0
+---
+schema: olm.channel
+name: alpha
+package: olm-68903-healthy
+entries:
+- name: olm-68903-healthy.v1.0.1
+
+kuiwang@Kuis-MacBook-Pro 68903 % opm validate index    
+kuiwang@Kuis-MacBook-Pro 68903 % 
+kuiwang@Kuis-MacBook-Pro 68903 % docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f index.Dockerfile -t quay.io/olmqe/olmv1index:68903                    
+[+] Building 49.4s (22/22) FINISHED                                                                                                                                                                                                                                                                                                                                  
+ => [internal] load build definition from index.Dockerfile                                                                                                                                                                                                                                                                                                      0.1s
+ => => transferring dockerfile: 636B                                                                                                                                                                                                                                                                                                                            0.0s
+ => [internal] load .dockerignore                    
+...
+ => [auth] olmqe/olmv1index:pull,push token for quay.io                                                                                                                                                                                                                                                                                                         0.0s
+ => [auth] olmqe/olm-index:pull olmqe/olmv1index:pull,push token for quay.io                                                                                                                                                                                                                                                                                    0.0s
+kuiwang@Kuis-MacBook-Pro 68903 % 
+
+how to use it:
+[root@preserve-olm-env2 operator]# cat catalogd.yaml 
+apiVersion: catalogd.operatorframework.io/v1alpha1
+kind: Catalog
+metadata:
+  name: catalog-68903
+spec:
+  source:
+    type: image
+    image:
+      ref: quay.io/olmqe/olmv1index:68903
+[root@preserve-olm-env2 operator]# oc apply -f catalogd.yaml 
+catalog.catalogd.operatorframework.io/catalog-68903 created
+[root@preserve-olm-env2 operator]# oc get catalog  catalog-68903
+NAME            AGE
+catalog-68903   32s
+[root@preserve-olm-env2 operator]# oc get catalog  catalog-68903 -o yaml
+apiVersion: catalogd.operatorframework.io/v1alpha1
+kind: Catalog
+metadata:
+..
+  name: catalog-68903
+  resourceVersion: "187570"
+  uid: e900b564-b30e-4816-8590-7c92b7323da0
+spec:
+  source:
+    image:
+      ref: quay.io/olmqe/olmv1index:68903
+    type: image
+status:
+...
+  contentURL: http://catalogd-catalogserver.openshift-catalogd.svc/catalogs/catalog-68903/all.json
+  phase: Unpacked
+..
+    type: image
+[root@preserve-olm-env2 operator]# oc expose service catalogd-catalogserver -n openshift-catalogd
+route/catalogd-catalogserver exposed
+[root@preserve-olm-env2 operator]# oc get route -n openshift-catalogd
+NAME                     HOST/PORT                                                                              PATH   SERVICES                 PORT   TERMINATION   WILDCARD
+catalogd-catalogserver   catalogd-catalogserver-openshift-catalogd.apps.kuiwang20.qe.devcluster.openshift.com          catalogd-catalogserver   http                 None
+[root@preserve-olm-env2 operator]# curl http://catalogd-catalogserver-openshift-catalogd.apps.kuiwang20.qe.devcluster.openshift.com/catalogs/catalog-68903/all.json|jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   487  100   487    0     0   6324      0 --:--:-- --:--:-- --:--:--  6407
+{
+  "defaultChannel": "alpha",
+  "name": "olm-68903-healthy",
+  "schema": "olm.package"
+}
+{
+  "image": "quay.io/olmqe/olmv1bundle:plain-68903-healthy",
+  "name": "olm-68903-healthy.v1.0.1",
+  "package": "olm-68903-healthy",
+  "properties": [
+    {
+      "type": "olm.package",
+      "value": {
+        "packageName": "olm-68903-healthy",
+        "version": "1.0.1"
+      }
+    },
+    {
+      "type": "olm.bundle.mediatype",
+      "value": "plain+v0"
+    }
+  ],
+  "schema": "olm.bundle"
+}
+{
+  "entries": [
+    {
+      "name": "olm-68903-healthy.v1.0.1"
+    }
+  ],
+  "name": "alpha",
+  "package": "olm-68903-healthy",
+  "schema": "olm.channel"
+}
+
+[root@preserve-olm-env2 operator]# cat 68903-healthy.yaml 
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: olm-68903-healthy
+spec:
+  packageName: olm-68903-healthy
+[root@preserve-olm-env2 operator]# oc apply -f 68903-healthy.yaml 
+operator.operators.operatorframework.io/olm-68903-healthy created
+[root@preserve-olm-env2 operator]# oc get operator.operators.operatorframework.io olm-68903-healthy
+NAME                AGE
+olm-68903-healthy   16s
+[root@preserve-olm-env2 operator]# oc get operator.operators.operatorframework.io olm-68903-healthy -o yaml
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  annotations:
+...
+  name: olm-68903-healthy
+  resourceVersion: "191407"
+  uid: a0827521-34e5-415e-a54f-e1e6fc51616a
+spec:
+  packageName: olm-68903-healthy
+  upgradeConstraintPolicy: Enforce
+status:
+  conditions:
+  - lastTransitionTime: "2023-11-20T06:08:06Z"
+    message: resolved to "quay.io/olmqe/olmv1bundle:plain-68903-healthy"
+    observedGeneration: 1
+    reason: Success
+    status: "True"
+    type: Resolved
+  - lastTransitionTime: "2023-11-20T06:08:19Z"
+    message: installed from "quay.io/olmqe/olmv1bundle:plain-68903-healthy"
+    observedGeneration: 1
+    reason: Success
+    status: "True"
+    type: Installed
+  installedBundleResource: quay.io/olmqe/olmv1bundle:plain-68903-healthy
+  resolvedBundleResource: quay.io/olmqe/olmv1bundle:plain-68903-healthy
+[root@preserve-olm-env2 operator]# oc get bd
+NAME                ACTIVE BUNDLE              INSTALL STATE           AGE
+olm-68903-healthy   olm-68903-healthy-7vv9w2   InstallationSucceeded   87s
+[root@preserve-olm-env2 operator]# oc get ns |grep olmv
+olmv1-68903-healthy                                Active   102s
+[root@preserve-olm-env2 operator]# oc get crd|grep ok
+ok68903gds.cache.example.com                                      2023-11-20T06:08:18Z
+
+[root@preserve-olm-env2 operator]# oc delete operator.operators.operatorframework.io olm-68903-healthy
+operator.operators.operatorframework.io "olm-68903-healthy" deleted
+[root@preserve-olm-env2 operator]# oc get crd|grep ok
+[root@preserve-olm-env2 operator]# oc get ns |grep olmv
+olmv1-68903-healthy                                Terminating   3m32s
+[root@preserve-olm-env2 operator]# oc get ns |grep olmv
+[root@preserve-olm-env2 operator]# 
+[root@preserve-olm-env2 operator]# oc get catalog
+NAME            AGE
+catalog-68903   12m
+[root@preserve-olm-env2 operator]# oc delete catalog catalog-68903
+catalog.catalogd.operatorframework.io "catalog-68903" deleted
+
