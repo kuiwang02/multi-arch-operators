@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: pod-68903-unhealthy
+spec:
+  packageName: pod-68903-unhealthy

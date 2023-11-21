@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: olm-68903-healthy
+spec:
+  packageName: olm-68903-healthy

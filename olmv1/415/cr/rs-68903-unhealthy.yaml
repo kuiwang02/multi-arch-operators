@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: rs-unhealthy
+spec:
+  packageName: rs-68903-unhealthy

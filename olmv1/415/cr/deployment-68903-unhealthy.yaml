@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: pod-deployment-unhealthy
+spec:
+  packageName: open-68903-dpunhealthy

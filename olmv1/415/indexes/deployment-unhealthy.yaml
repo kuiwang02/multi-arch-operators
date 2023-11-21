@@ -1,0 +1,84 @@
+---
+defaultChannel: alpha
+name: open-68903-dpunhealthy
+schema: olm.package
+---
+entries:
+- name: dpunhealthy.v0.0.1
+name: alpha
+package: open-68903-dpunhealthy
+schema: olm.channel
+---
+image: quay.io/olmqe/olmv1bundle:registry-68903-deployunhealthy
+name: dpunhealthy.v0.0.1
+package: open-68903-dpunhealthy
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Openv168903
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: open-68903-dpunhealthy
+    version: 0.0.1
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Openv168903",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "dpunhealthy",
+                "app.kubernetes.io/instance": "openv168903-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "openv168903",
+                "app.kubernetes.io/part-of": "dpunhealthy"
+              },
+              "name": "openv168903-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-11-14T05:52:02Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Openv168903
+        name: openv168903s.cache.example.com
+        version: v1alpha1
+    description: open68903
+    displayName: open68903
+    installModes:
+    - supported: false
+      type: OwnNamespace
+    - supported: false
+      type: SingleNamespace
+    - supported: false
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - open68903
+    links:
+    - name: Dpunhealthy
+      url: https://dpunhealthy.domain
+    maturity: alpha
+    provider:
+      name: open68903
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/olmv1bundle:base68903no
+  name: ""
+- image: quay.io/olmqe/olmv1bundle:registry-68903-deployunhealthy
+  name: ""
+schema: olm.bundle
+
+

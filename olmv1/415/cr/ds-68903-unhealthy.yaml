@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: ds-unhealthy
+spec:
+  packageName: ds-68903-unhealthy

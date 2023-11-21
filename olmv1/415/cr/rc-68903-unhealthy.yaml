@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: rc-unhealthy
+spec:
+  packageName: rc-68903-unhealthy

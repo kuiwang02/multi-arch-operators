@@ -1,0 +1,6 @@
+apiVersion: operators.operatorframework.io/v1alpha1
+kind: Operator
+metadata:
+  name: unsupport-healthy
+spec:
+  packageName: unspport-68903-healthy
