@@ -1,0 +1,16 @@
+apiVersion: core.rukpak.io/v1alpha1
+kind: BundleDeployment
+metadata:
+  name: 68903-healthy
+spec:
+  provisionerClassName: core-rukpak-io-plain
+  template:
+    metadata:
+      labels:
+        app: open
+    spec:
+      provisionerClassName: core-rukpak-io-plain
+      source:
+        image:
+          ref: quay.io/olmqe/olmv1bundle:plain-68903-healthy
+        type: image

@@ -1,0 +1,13 @@
+apiVersion: core.rukpak.io/v1alpha1
+kind: BundleDeployment
+metadata:
+  name: 68903-deployment-unhealthy
+spec:
+  provisionerClassName: core-rukpak-io-plain
+  template:
+    spec:
+      provisionerClassName: core-rukpak-io-registry
+      source:
+        image:
+          ref: quay.io/olmqe/olmv1bundle:registry-68903-deployunhealthy
+        type: image
