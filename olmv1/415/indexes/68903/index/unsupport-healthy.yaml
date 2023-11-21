@@ -1,0 +1,23 @@
+---
+defaultChannel: alpha
+name: unspport-68903-healthy
+schema: olm.package
+---
+image: quay.io/olmqe/olmv1bundle:plain-68903-unsupporthealthy
+name: unspport-68903-healthy.v1.0.1
+package: unspport-68903-healthy
+properties:
+- type: olm.package
+  value:
+    packageName: unspport-68903-healthy
+    version: 1.0.1
+- type: olm.bundle.mediatype
+  value: plain+v0
+schema: olm.bundle
+---
+entries:
+- name: unspport-68903-healthy.v1.0.1
+name: alpha
+package: unspport-68903-healthy
+schema: olm.channel
+

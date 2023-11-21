@@ -1,0 +1,23 @@
+---
+defaultChannel: alpha
+name: rs-68903-unhealthy
+schema: olm.package
+---
+image: quay.io/olmqe/olmv1bundle:plain-68903-rsunhealthy
+name: rs-68903-unhealthy.v1.0.1
+package: rs-68903-unhealthy
+properties:
+- type: olm.package
+  value:
+    packageName: rs-68903-unhealthy
+    version: 1.0.1
+- type: olm.bundle.mediatype
+  value: plain+v0
+schema: olm.bundle
+---
+entries:
+- name: rs-68903-unhealthy.v1.0.1
+name: alpha
+package: rs-68903-unhealthy
+schema: olm.channel
+
