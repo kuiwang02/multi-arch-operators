@@ -14,10 +14,6 @@ spec:
     spec:
       containers:
       - name: olmv1ds
-        command:
-          - sh
-          - -c
-          - "sleep 300"
         imagePullPolicy: IfNotPresent
-        image: quay.io/olmqe/hello-openshift:1.2.0no
+        image: quay.io/openshifttest/nginx-alpine:latestno
 

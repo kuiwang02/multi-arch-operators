@@ -7,11 +7,7 @@ metadata:
   namespace: olmv1-68903-healthy
 spec:
   containers:
-  - command:
-      - sh
-      - -c
-      - "sleep 1800"
-    image: quay.io/olmqe/hello-openshift:1.2.0
+  - image: quay.io/openshifttest/nginx-alpine:latest
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:

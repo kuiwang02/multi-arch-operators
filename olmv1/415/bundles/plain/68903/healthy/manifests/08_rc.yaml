@@ -14,8 +14,4 @@ spec:
     spec:
       containers:
       - name: olmv1-rc
-        command:
-          - sh
-          - -c
-          - "sleep 300"
-        image: quay.io/olmqe/hello-openshift:1.2.0
+        image: quay.io/openshifttest/nginx-alpine:latest

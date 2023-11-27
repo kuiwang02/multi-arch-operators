@@ -14,10 +14,6 @@ spec:
         app: olmv1-dp
     spec:
       containers:
-      - command:
-          - sh
-          - -c
-          - "sleep 300"
-        image: quay.io/openshifttest/hello-openshift:1.2.0
-        name: olmv1-dp
+      - name: olmv1-dp
+        image: quay.io/openshifttest/nginx-alpine:latest
 
