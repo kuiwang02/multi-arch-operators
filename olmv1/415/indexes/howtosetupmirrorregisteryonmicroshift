@@ -1,0 +1,353 @@
+Note:
+1, it basically refer to https://github.com/jianzhangbjz/jianzhangbjz.github.io/blob/master/set_up_local_private_repository_with_docker.md
+2, we use microshift pipeline to create microshift cluster which is on the VM, and create mirror registry on this VM.
+
+
+step1: create mirror registry on VM
+1, generate user and passwd following the above link. here I use existing one.
+[redhat@dhcp-1-235-13 ~]$ mkdir -p /home/redhat/auth
+[redhat@dhcp-1-235-13 ~]$ vi /home/redhat/auth/htpasswd
+2, generate cert with the hostname of VM. NOTE: please remember to change hostname
+[redhat@dhcp-1-235-13 ~]$ mkdir -p /home/redhat/certs
+[redhat@dhcp-1-235-13 ~]$ hostname
+dhcp-1-235-13.arm.eng.rdu2.redhat.com
+[redhat@dhcp-1-235-13 ~]$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout /home/redhat/certs/domain.key -x509 -days 3650 -out /home/redhat/certs/domain.crt -subj "/CN=dhcp-1-235-13.arm.eng.rdu2.redhat.com" -addext "subjectAltName = DNS:dhcp-1-235-13.arm.eng.rdu2.redhat.com"
+..............+...+............+..+...+...+......+.+..+...+.........+.+...+..+...+....+........+....+...+..+.........+.......+........+....+...+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+...+...+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+......+........+..........+......+......+..+............+.+.....+.............+......+...+......+............+...+..+...+....+.....+.......+......+..+..........+..+...+......+...................+..+.............+..+...+...............+......+.......+...............+...+.....+.+...........+...+..........+..+...+.........+.........................+...+.........+.....+.+........+.+.....+......+...+.......+....................+.........+...+.+......+...........+...............+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.+.....+....+...+......+...........+.+..+.....................+.+...........+.........+.+..+.+.....+.........+...+...+.......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*........+..........+..+....+...+..+...+.+..+....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*....+....+.....+......+.............+......+..+.......+........+....+......+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-----
+[redhat@dhcp-1-235-13 ~]$ ls -l /home/redhat/certs/
+total 8
+-rw-r--r--. 1 redhat redhat 1952 Dec 13 05:01 domain.crt
+-rw-------. 1 redhat redhat 3272 Dec 13 05:01 domain.key
+[redhat@dhcp-1-235-13 ~]$ 
+3, start mirror registry
+[redhat@dhcp-1-235-13 ~]$ sudo podman run -it -d --rm -p 5000:5000 --name=registry -v /home/redhat/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd  -v /home/redhat/certs:/certs -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key --privileged quay.io/olmqe/registry:2.7.0
+Trying to pull quay.io/olmqe/registry:2.7.0...
+Getting image source signatures
+Copying blob 9c2f6bbb4861 done  
+Copying blob c504a7564f77 done  
+Copying blob 4588f9e8a81d done  
+Copying blob 4fa9143e110c done  
+Copying blob 66894b2be23e done  
+Copying config 33fbbf4a24 done  
+Writing manifest to image destination
+672ae6bdbca5f17f5bc019bb332004330c0a29be876ce04e74f117a9d90bd3f9
+[redhat@dhcp-1-235-13 ~]$ 
+4, update ca on the VM so that podman can use it.
+[redhat@dhcp-1-235-13 ~]$ sudo cp /home/redhat/certs/domain.crt /etc/pki/ca-trust/source/anchors/ca.crt
+[redhat@dhcp-1-235-13 ~]$ sudo update-ca-trust
+5, login registry to get auth
+[redhat@dhcp-1-235-13 ~]$ podman login dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000
+Username: redhat
+Password: 
+Login Succeeded!
+[redhat@dhcp-1-235-13 ~]$ cat /run/user/${UID}/containers/auth.json 
+{
+	"auths": {
+		"dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000": {
+			"auth": "xxx=="
+		}
+	}
+}
+or 
+take command to generate
+echo -n "user:passwd"|base64 -w0
+6, try to mirror the images and check it on the VM
+[redhat@dhcp-1-235-13 ~]$ oc adm catalog mirror quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000 --manifests-only
+src image has index label for declarative configs path: /configs/
+using index path mapping: /configs/:/tmp/1376091201
+wrote declarative configs to /tmp/1376091201
+using declarative configs at: /tmp/1376091201
+no digest mapping available for gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0, skip writing to ImageDigestMirrorSet
+no digest mapping available for quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new, skip writing to ImageDigestMirrorSet
+no digest mapping available for gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0, skip writing to ImageContentSourcePolicy
+no digest mapping available for quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new, skip writing to ImageContentSourcePolicy
+wrote mirroring manifests to manifests-nginx-ok-index-1702537156
+deleted dir /tmp/1376091201
+
+[redhat@dhcp-1-235-13 ~]$ oc image mirror -f manifests-nginx-ok-index-1702537156/mapping.txt --filter-by-os=.*
+dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/
+  kubebuilder/kube-rbac-proxy
+    manifests:
+      sha256:8106abe6d640376e6a3713c9c2dbb5b8e9a0129ebf389085ef95bff98ac71518
+      sha256:a2523c532c0c3d51a5396a901d7ded23e402a9a1492c783aae27af6d0c1d2ec5
+...
+sha256:03f890334f4e6ff643c246cf22bb9d0273d1a59e535ae18c0806335be628e4ad dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+info: Mirroring completed in 16.74s (8.834kB/s)
+[redhat@dhcp-1-235-13 ~]$ 
+redhat@dhcp-1-235-13 ~]$ curl -k --user <user>:<passwd> https://dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/v2/_catalog
+{"repositories":["kubebuilder/kube-rbac-proxy","olmqe/nginx-ok-bundle","olmqe/nginx-ok-index","olmqe/nginx-operator-base"]}
+[redhat@dhcp-1-235-13 ~]$ podman pull dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+Trying to pull dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new...
+Getting image source signatures
+Copying blob d3c894b5b2b0 skipped: already exists  
+Copying blob 63b450eae87c skipped: already exists  
+Copying blob b4ca4c215f48 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob eebb06941f3e skipped: already exists  
+Copying blob 02cd68c0cbf6 skipped: already exists  
+Copying blob 46ba3f23f1d3 skipped: already exists  
+Copying blob 4a2d7bc46f58 skipped: already exists  
+Copying blob 12951d87a5f4 skipped: already exists  
+Copying blob 1afd58bfc463 skipped: already exists  
+Copying blob 68da7a115e46 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 4fa131a1b726 skipped: already exists  
+Copying blob b810096889aa done  
+Copying blob 5038dc9c55ec done  
+Copying config f7294810d3 done  
+Writing manifest to image destination
+f7294810d370ccf0a92ac966e8d255854489fceaef52a83d999010ed2419a721
+[redhat@dhcp-1-235-13 ~]$ 
+
+
+
+step2: config cluster so that it can access mirror registry. it could be done on VM with kubeconfig, and also can be done on any terminal with kubeconf
+1, update ca
+[root@preserve-olm-env2 OPRUN-3063]# oc get node
+NAME                                    STATUS   ROLES                         AGE   VERSION
+dhcp-1-235-13.arm.eng.rdu2.redhat.com   Ready    control-plane,master,worker   66m   v1.28.4
+[root@preserve-olm-env2 OPRUN-3063]# oc debug node/dhcp-1-235-13.arm.eng.rdu2.redhat.com
+Starting pod/dhcp-1-235-13armengrdu2redhatcom-debug ...
+To use host binaries, run `chroot /host`
+Pod IP: 10.1.235.13
+If you don't see a command prompt, try pressing enter.
+sh-4.4# chroot /host
+sh-5.1# ls -l etc/pki/ca-trust/source/anchors/ca.crt
+-rw-r--r--. 1 root root 1952 Dec 13 05:05 etc/pki/ca-trust/source/anchors/ca.crt
+sh-5.1# it already exist and is same with ca.crt on VM because they are on same VM. or else, could copy it.
+sh: it: command not found
+sh-5.1# update-ca-trust
+sh-5.1# 
+2, add auth
+sh-5.1# cat /etc/crio/openshift-pull-secret |jq .
+{
+  "auths": {
+    "cloud.openshift.com": {
+...
+    }
+  }
+}
+sh-5.1# vi /etc/crio/openshift-pull-secret
+sh-5.1# cat /etc/crio/openshift-pull-secret |jq .
+{
+...
+    "dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000": {
+      "auth": "xxx=="
+    }
+  }
+}
+3, restart crio
+sh-5.1# systemctl restart crio
+
+Removing debug pod ...
+
+step3: try to create catatlog source
+[root@preserve-olm-env2 OPRUN-3063]# cat catsrc.yaml 
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: nginx-ok-index
+  namespace: default
+spec:
+  image: dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+  sourceType: grpc
+[root@preserve-olm-env2 OPRUN-3063]# oc apply -f catsrc.yaml 
+catalogsource.operators.coreos.com/nginx-ok-index created
+[root@preserve-olm-env2 OPRUN-3063]# oc -n default get pod
+NAME                   READY   STATUS    RESTARTS   AGE
+nginx-ok-index-4w2mf   1/1     Running   0          12s
+[root@preserve-olm-env2 OPRUN-3063]# oc -n default get catsrc nginx-ok-index -o yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"operators.coreos.com/v1alpha1","kind":"CatalogSource","metadata":{"annotations":{},"name":"nginx-ok-index","namespace":"default"},"spec":{"image":"dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new","sourceType":"grpc"}}
+  creationTimestamp: "2023-12-13T10:25:56Z"
+  generation: 1
+  name: nginx-ok-index
+  namespace: default
+  resourceVersion: "4984"
+  uid: 4cfae6e5-950e-416a-b1af-40cb0c74eaa6
+spec:
+  image: dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+  sourceType: grpc
+status:
+  connectionState:
+    address: nginx-ok-index.default.svc:50051
+    lastConnect: "2023-12-13T10:26:13Z"
+    lastObservedState: READY
+  registryService:
+    createdAt: "2023-12-13T10:25:56Z"
+    port: "50051"
+    protocol: grpc
+    serviceName: nginx-ok-index
+    serviceNamespace: default
+
+
+step4: install operator on terminal
+1, update crio config
+[root@preserve-olm-env2 OPRUN-3063]# oc get node
+NAME                                    STATUS   ROLES                         AGE   VERSION
+dhcp-1-235-13.arm.eng.rdu2.redhat.com   Ready    control-plane,master,worker   16h   v1.28.4
+[root@preserve-olm-env2 OPRUN-3063]# oc debug node/dhcp-1-235-13.arm.eng.rdu2.redhat.com
+Starting pod/dhcp-1-235-13armengrdu2redhatcom-debug ...
+To use host binaries, run `chroot /host`
+Pod IP: 10.1.235.13
+If you don't see a command prompt, try pressing enter.
+sh-4.4# chroot /host
+sh-5.1# vi /etc/containers/registries.conf.d/999-microshift-mirror.conf
+sh-5.1# cat /etc/containers/registries.conf.d/999-microshift-mirror.conf
+[[registry]]
+  prefix = ""
+  location = "quay.io"
+  mirror-by-digest-only = true
+
+  [[registry.mirror]]
+    location = "dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000"
+    insecure = false
+sh-5.1# 
+
+2, restart crio
+sh-5.1# systemctl restart crio
+
+Removing debug pod ...
+[root@preserve-olm-env2 OPRUN-3063]# 
+3, install operator
+[root@preserve-olm-env2 disconn]# cat ns.yaml 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: olm-microshift
+[root@preserve-olm-env2 disconn]# oc apply -f ns.yaml 
+namespace/olm-microshift created
+[root@preserve-olm-env2 disconn]# cat catsrc.yaml 
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: catalog
+  namespace: olm-microshift
+spec:
+  displayName: Microshift Catalog
+  grpcPodConfig:
+    securityContextConfig: restricted
+  image: dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+  publisher: QE
+  sourceType: grpc
+
+[root@preserve-olm-env2 disconn]# oc apply -f catsrc.yaml 
+catalogsource.operators.coreos.com/catalog created
+[root@preserve-olm-env2 disconn]# oc -n olm-microshift get pod
+NAME            READY   STATUS    RESTARTS   AGE
+catalog-h8bsw   1/1     Running   0          18s
+[root@preserve-olm-env2 disconn]# cat og.yaml 
+kind: OperatorGroup
+apiVersion: operators.coreos.com/v1
+metadata:
+  name: og
+  namespace: olm-microshift
+spec:
+  targetNamespaces:
+  - olm-microshift
+[root@preserve-olm-env2 disconn]# oc apply -f og.yaml 
+operatorgroup.operators.coreos.com/og created
+
+--
+disable quay
+[root@preserve-olm-env2 disconn]# oc get node
+NAME                                    STATUS   ROLES                         AGE   VERSION
+dhcp-1-235-13.arm.eng.rdu2.redhat.com   Ready    control-plane,master,worker   17h   v1.28.4
+[root@preserve-olm-env2 disconn]# oc debug node/dhcp-1-235-13.arm.eng.rdu2.redhat.com
+Starting pod/dhcp-1-235-13armengrdu2redhatcom-debug ...
+To use host binaries, run `chroot /host`
+Pod IP: 10.1.235.13
+If you don't see a command prompt, try pressing enter.
+sh-4.4# chroot /host
+sh-5.1# nslookup quay.io
+Server:		10.11.5.160
+Address:	10.11.5.160#53
+
+Non-authoritative answer:
+Name:	quay.io
+Address: 34.224.219.70
+Name:	quay.io
+Address: 3.213.18.40
+Name:	quay.io
+Address: 44.196.174.155
+Name:	quay.io
+Address: 34.203.80.76
+Name:	quay.io
+Address: 18.235.212.116
+Name:	quay.io
+Address: 54.156.243.51
+Name:	quay.io
+Address: 2600:1f18:483:cf00:1067:aed3:6357:438
+Name:	quay.io
+Address: 2600:1f18:483:cf02:1c73:14dc:6007:4872
+Name:	quay.io
+Address: 2600:1f18:483:cf01:5eb5:68f2:244f:d3ec
+Name:	quay.io
+Address: 2600:1f18:483:cf01:27b5:90c9:eb73:3c17
+Name:	quay.io
+Address: 2600:1f18:483:cf02:8a6c:2889:ffc:a4a5
+Name:	quay.io
+Address: 2600:1f18:483:cf00:5abd:e2ed:3fd6:3b0d
+
+sh-5.1# curl quay.io                                                                                  
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+</body>
+</html>
+sh-5.1# iptables -A OUTPUT -d 34.224.219.70,3.213.18.40,44.196.174.155,34.203.80.76,18.235.212.116,54.156.243.51 -j DROP
+sh-5.1# curl quay.io
+^C
+--
+
+[root@preserve-olm-env2 disconn]# cat sub.yaml 
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: nginx-ok1-1399
+  namespace: olm-microshift
+spec:
+  channel: alpha
+  installPlanApproval: automatic
+  name: nginx-ok1-1399
+  source: catalog
+  sourceNamespace: olm-microshift
+  startingCSV: nginx-ok1-1399.v0.0.4
+[root@preserve-olm-env2 disconn]# oc  apply -f sub.yaml 
+subscription.operators.coreos.com/nginx-ok1-1399 created
+[root@preserve-olm-env2 disconn]# oc -n olm-microshift get csv 
+NAME                    DISPLAY          VERSION   REPLACES                PHASE
+nginx-ok1-1399.v0.0.4   nginx-ok1-1399   0.0.4     nginx-ok1-1399.v0.0.2   Installing
+[root@preserve-olm-env2 disconn]# oc -n olm-microshift get csv 
+NAME                    DISPLAY          VERSION   REPLACES                PHASE
+nginx-ok1-1399.v0.0.4   nginx-ok1-1399   0.0.4     nginx-ok1-1399.v0.0.2   Succeeded
+[root@preserve-olm-env2 disconn]# 
+
+after testing, enable quay.io
+----
+[root@preserve-olm-env2 disconn]# oc get node
+NAME                                    STATUS   ROLES                         AGE   VERSION
+dhcp-1-235-13.arm.eng.rdu2.redhat.com   Ready    control-plane,master,worker   17h   v1.28.4
+[root@preserve-olm-env2 disconn]# oc debug node/dhcp-1-235-13.arm.eng.rdu2.redhat.com
+Starting pod/dhcp-1-235-13armengrdu2redhatcom-debug ...
+To use host binaries, run `chroot /host`
+Pod IP: 10.1.235.13
+If you don't see a command prompt, try pressing enter.
+sh-4.4# chroot /host
+sh-5.1# iptables -D OUTPUT -d 34.224.219.70,3.213.18.40,44.196.174.155,34.203.80.76,18.235.212.116,54.156.243.51 -j DROP
+sh-5.1# curl quay.io
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+</body>
+</html>
+sh-5.1# 
+
+
