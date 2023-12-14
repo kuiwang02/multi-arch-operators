@@ -1,0 +1,766 @@
+---
+defaultChannel: alpha
+name: nginx-ok1-1399
+schema: olm.package
+---
+entries:
+- name: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.2
+  replaces: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.4
+  replaces: nginx-ok1-1399.v0.0.2
+name: alpha
+package: nginx-ok1-1399
+schema: olm.channel
+---
+entries:
+- name: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.3
+  replaces: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.5
+  replaces: nginx-ok1-1399.v0.0.3
+name: beta
+package: nginx-ok1-1399
+schema: olm.channel
+---
+defaultChannel: alpha
+name: nginx-ok2-1399
+schema: olm.package
+---
+entries:
+- name: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.2
+  replaces: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.4
+  replaces: nginx-ok2-1399.v0.0.2
+name: alpha
+package: nginx-ok2-1399
+schema: olm.channel
+---
+entries:
+- name: nginx-ok2-1399.v0.0.3
+- name: nginx-ok2-1399.v0.0.5
+  replaces: nginx-ok2-1399.v0.0.3
+name: beta
+package: nginx-ok2-1399
+schema: olm.channel
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:a4335c8ff86e18f23f2edc2d834c723b563b4425ab1883f3181bc9006e9716c8
+name: nginx-ok1-1399.v0.0.1
+package: nginx-ok1-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok11399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok1-1399
+    version: 0.0.1
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok11399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok1-1399",
+                "app.kubernetes.io/instance": "ok11399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok11399",
+                "app.kubernetes.io/part-of": "nginx-ok1-1399"
+              },
+              "name": "ok11399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T06:14:51Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok11399
+        name: ok11399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok1-1399
+    displayName: nginx-ok1-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok1-1399
+    links:
+    - name: Nginx Ok1 1399
+      url: https://nginx-ok1-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok1-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:a4335c8ff86e18f23f2edc2d834c723b563b4425ab1883f3181bc9006e9716c8
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:869bf430b9d7e232e92588e6aa1bdeaed64fc4a6c4a54b15438968c62a2fec54
+name: nginx-ok1-1399.v0.0.2
+package: nginx-ok1-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok11399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok1-1399
+    version: 0.0.2
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok11399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok1-1399",
+                "app.kubernetes.io/instance": "ok11399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok11399",
+                "app.kubernetes.io/part-of": "nginx-ok1-1399"
+              },
+              "name": "ok11399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T06:14:51Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok11399
+        name: ok11399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok1-1399
+    displayName: nginx-ok1-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok1-1399
+    links:
+    - name: Nginx Ok1 1399
+      url: https://nginx-ok1-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok1-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:869bf430b9d7e232e92588e6aa1bdeaed64fc4a6c4a54b15438968c62a2fec54
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:f522a691ce7a755d98f2f6a17ba6d02dcb9e4e97ffa509c936ec785bec580da1
+name: nginx-ok1-1399.v0.0.3
+package: nginx-ok1-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok11399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok1-1399
+    version: 0.0.3
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok11399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok1-1399",
+                "app.kubernetes.io/instance": "ok11399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok11399",
+                "app.kubernetes.io/part-of": "nginx-ok1-1399"
+              },
+              "name": "ok11399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T06:14:51Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok11399
+        name: ok11399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok1-1399
+    displayName: nginx-ok1-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok1-1399
+    links:
+    - name: Nginx Ok1 1399
+      url: https://nginx-ok1-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok1-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:f522a691ce7a755d98f2f6a17ba6d02dcb9e4e97ffa509c936ec785bec580da1
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:90c481198f5322f3cb55842c2bd3f5b564372bca8ba39bb3065d26ec42d88390
+name: nginx-ok1-1399.v0.0.4
+package: nginx-ok1-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok11399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok1-1399
+    version: 0.0.4
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok11399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok1-1399",
+                "app.kubernetes.io/instance": "ok11399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok11399",
+                "app.kubernetes.io/part-of": "nginx-ok1-1399"
+              },
+              "name": "ok11399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T06:14:51Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok11399
+        name: ok11399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok1-1399
+    displayName: nginx-ok1-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok1-1399
+    links:
+    - name: Nginx Ok1 1399
+      url: https://nginx-ok1-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok1-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:90c481198f5322f3cb55842c2bd3f5b564372bca8ba39bb3065d26ec42d88390
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:24aafc29fc912295a46b1cd78386c32333114472307ae05c4fa3916bf5011db3
+name: nginx-ok1-1399.v0.0.5
+package: nginx-ok1-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok11399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok1-1399
+    version: 0.0.5
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok11399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok1-1399",
+                "app.kubernetes.io/instance": "ok11399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok11399",
+                "app.kubernetes.io/part-of": "nginx-ok1-1399"
+              },
+              "name": "ok11399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T06:14:51Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok11399
+        name: ok11399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok1-1399
+    displayName: nginx-ok1-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok1-1399
+    links:
+    - name: Nginx Ok1 1399
+      url: https://nginx-ok1-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok1-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:24aafc29fc912295a46b1cd78386c32333114472307ae05c4fa3916bf5011db3
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:7d6746ae57d066db7253a4d40385f60c98b0091958c0b1c36ad72b32c945f28f
+name: nginx-ok2-1399.v0.0.1
+package: nginx-ok2-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok21399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok2-1399
+    version: 0.0.1
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok21399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok2-1399",
+                "app.kubernetes.io/instance": "ok21399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok21399",
+                "app.kubernetes.io/part-of": "nginx-ok2-1399"
+              },
+              "name": "ok21399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T07:14:23Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok21399
+        name: ok21399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok2-1399
+    displayName: nginx-ok2-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok2-1399
+    links:
+    - name: Nginx Ok2 1399
+      url: https://nginx-ok2-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok2-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:7d6746ae57d066db7253a4d40385f60c98b0091958c0b1c36ad72b32c945f28f
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:0ec485e1747281b1547844f7af4692e3e7debb8aaea07fb6edb6afa65e025964
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:0ca80beca4f3a238a76ceecc6f161a17205dcf5f195f4dae3d41e9c2e6bd7df6
+name: nginx-ok2-1399.v0.0.2
+package: nginx-ok2-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok21399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok2-1399
+    version: 0.0.2
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok21399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok2-1399",
+                "app.kubernetes.io/instance": "ok21399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok21399",
+                "app.kubernetes.io/part-of": "nginx-ok2-1399"
+              },
+              "name": "ok21399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T07:14:23Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok21399
+        name: ok21399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok2-1399
+    displayName: nginx-ok2-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok2-1399
+    links:
+    - name: Nginx Ok2 1399
+      url: https://nginx-ok2-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok2-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:0ca80beca4f3a238a76ceecc6f161a17205dcf5f195f4dae3d41e9c2e6bd7df6
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:0ec485e1747281b1547844f7af4692e3e7debb8aaea07fb6edb6afa65e025964
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:d089e2e7d8ef8f19ed03a4e2332c1af5cff750c0835e53106190ced1a8179b98
+name: nginx-ok2-1399.v0.0.3
+package: nginx-ok2-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok21399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok2-1399
+    version: 0.0.3
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok21399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok2-1399",
+                "app.kubernetes.io/instance": "ok21399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok21399",
+                "app.kubernetes.io/part-of": "nginx-ok2-1399"
+              },
+              "name": "ok21399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T07:14:23Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok21399
+        name: ok21399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok2-1399
+    displayName: nginx-ok2-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok2-1399
+    links:
+    - name: Nginx Ok2 1399
+      url: https://nginx-ok2-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok2-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:d089e2e7d8ef8f19ed03a4e2332c1af5cff750c0835e53106190ced1a8179b98
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:0ec485e1747281b1547844f7af4692e3e7debb8aaea07fb6edb6afa65e025964
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:534699a0ab599988695fa9af10628c8e067fdedadcf4d7145215d4684cf1b12f
+name: nginx-ok2-1399.v0.0.4
+package: nginx-ok2-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok21399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok2-1399
+    version: 0.0.4
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok21399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok2-1399",
+                "app.kubernetes.io/instance": "ok21399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok21399",
+                "app.kubernetes.io/part-of": "nginx-ok2-1399"
+              },
+              "name": "ok21399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T07:14:23Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok21399
+        name: ok21399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok2-1399
+    displayName: nginx-ok2-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok2-1399
+    links:
+    - name: Nginx Ok2 1399
+      url: https://nginx-ok2-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok2-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:534699a0ab599988695fa9af10628c8e067fdedadcf4d7145215d4684cf1b12f
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:0ec485e1747281b1547844f7af4692e3e7debb8aaea07fb6edb6afa65e025964
+  name: ""
+schema: olm.bundle
+---
+image: quay.io/olmqe/nginx-ok-bundle@sha256:15c4df07c00683a4efcf55c2e009557925b3994b75203941f8b6a9519b658742
+name: nginx-ok2-1399.v0.0.5
+package: nginx-ok2-1399
+properties:
+- type: olm.gvk
+  value:
+    group: cache.example.com
+    kind: Ok21399
+    version: v1alpha1
+- type: olm.package
+  value:
+    packageName: nginx-ok2-1399
+    version: 0.0.5
+- type: olm.csv.metadata
+  value:
+    annotations:
+      alm-examples: |-
+        [
+          {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Ok21399",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/created-by": "nginx-ok2-1399",
+                "app.kubernetes.io/instance": "ok21399-sample",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "ok21399",
+                "app.kubernetes.io/part-of": "nginx-ok2-1399"
+              },
+              "name": "ok21399-sample"
+            },
+            "spec": null
+          }
+        ]
+      capabilities: Basic Install
+      createdAt: "2023-02-14T07:14:23Z"
+      operators.operatorframework.io/builder: operator-sdk-v1.17.0+git
+      operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
+    apiServiceDefinitions: {}
+    crdDescriptions:
+      owned:
+      - kind: Ok21399
+        name: ok21399s.cache.example.com
+        version: v1alpha1
+    description: nginx-ok2-1399
+    displayName: nginx-ok2-1399
+    installModes:
+    - supported: true
+      type: OwnNamespace
+    - supported: true
+      type: SingleNamespace
+    - supported: true
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+    keywords:
+    - nginx-ok2-1399
+    links:
+    - name: Nginx Ok2 1399
+      url: https://nginx-ok2-1399.domain
+    maturity: alpha
+    provider:
+      name: nginx-ok2-1399
+relatedImages:
+- image: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0
+  name: ""
+- image: quay.io/olmqe/nginx-ok-bundle@sha256:15c4df07c00683a4efcf55c2e009557925b3994b75203941f8b6a9519b658742
+  name: ""
+- image: quay.io/olmqe/nginx-operator-base@sha256:0ec485e1747281b1547844f7af4692e3e7debb8aaea07fb6edb6afa65e025964
+  name: ""
+schema: olm.bundle

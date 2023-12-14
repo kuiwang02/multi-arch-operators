@@ -1,0 +1,96 @@
+refer to https://github.com/kuiwang02/multi-arch-operators/blob/master/changetomultistep
+ 1016  mkdir digest
+ 1017  cd digest
+ 1018  opm alpha bundle unpack quay.io/olmqe/nginx-ok-bundle:v1-0.0.1-multi
+ 1019  cat metadata/annotations.yaml
+ 1020  cp ../bundle.Dockerfile .
+ 1021  cat bundle.Dockerfile
+ 1022  grep -Fr "image" manifests
+ 1023  vi manifests/nginx-ok1-1399.clusterserviceversion.yaml (change image to digest)
+ 1024  grep -Fr "image" manifests
+ 1025  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v1-0.0.1-multi-digest
+
+
+mkdir digest
+cd digest
+opm alpha bundle unpack quay.io/olmqe/nginx-ok-bundle:v2-0.0.1-multi
+cat metadata/annotations.yaml
+cp ../bundle.Dockerfile .
+cat bundle.Dockerfile
+grep -Fr "image" manifests
+vi manifests/nginx-ok2-1399.clusterserviceversion.yaml
+grep -Fr "image" manifests
+docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/nginx-ok-bundle:v2-0.0.1-multi-digest
+---
+1183  mkdir muilt-digest
+ 1184  cd muilt-digest
+ 1185  ls
+ 1186  mkdir catalog
+ 1187  opm generate dockerfile catalog
+ 1188  touch catalog/index.yaml
+ 1189  cat catalog/index.yaml
+---
+defaultChannel: alpha
+name: nginx-ok1-1399
+schema: olm.package
+---
+entries:
+- name: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.2
+  replaces: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.4
+  replaces: nginx-ok1-1399.v0.0.2
+name: alpha
+package: nginx-ok1-1399
+schema: olm.channel
+---
+entries:
+- name: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.3
+  replaces: nginx-ok1-1399.v0.0.1
+- name: nginx-ok1-1399.v0.0.5
+  replaces: nginx-ok1-1399.v0.0.3
+name: beta
+package: nginx-ok1-1399
+schema: olm.channel
+---
+defaultChannel: alpha
+name: nginx-ok2-1399
+schema: olm.package
+---
+entries:
+- name: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.2
+  replaces: nginx-ok2-1399.v0.0.1
+- name: nginx-ok2-1399.v0.0.4
+  replaces: nginx-ok2-1399.v0.0.2
+name: alpha
+package: nginx-ok2-1399
+schema: olm.channel
+---
+entries:
+- name: nginx-ok2-1399.v0.0.3
+- name: nginx-ok2-1399.v0.0.5
+  replaces: nginx-ok2-1399.v0.0.3
+name: beta
+package: nginx-ok2-1399
+schema: olm.channel
+
+ 1190  opm render quay.io/olmqe/nginx-ok-bundle@sha256:a4335c8ff86e18f23f2edc2d834c723b563b4425ab1883f3181bc9006e9716c8  -o yaml >> catalog/index.yaml
+ 1191  grep image catalog/index.yaml
+ 1192  opm render quay.io/olmqe/nginx-ok-bundle@sha256:869bf430b9d7e232e92588e6aa1bdeaed64fc4a6c4a54b15438968c62a2fec54  -o yaml >> catalog/index.yaml
+ 1193  opm render quay.io/olmqe/nginx-ok-bundle@sha256:f522a691ce7a755d98f2f6a17ba6d02dcb9e4e97ffa509c936ec785bec580da1  -o yaml >> catalog/index.yaml
+ 1194  opm render quay.io/olmqe/nginx-ok-bundle@sha256:90c481198f5322f3cb55842c2bd3f5b564372bca8ba39bb3065d26ec42d88390  -o yaml >> catalog/index.yaml
+ 1195  opm render quay.io/olmqe/nginx-ok-bundle@sha256:24aafc29fc912295a46b1cd78386c32333114472307ae05c4fa3916bf5011db3  -o yaml >> catalog/index.yaml
+ 1196  opm render quay.io/olmqe/nginx-ok-bundle@sha256:7d6746ae57d066db7253a4d40385f60c98b0091958c0b1c36ad72b32c945f28f  -o yaml >> catalog/index.yaml
+ 1197  opm render quay.io/olmqe/nginx-ok-bundle@sha256:0ca80beca4f3a238a76ceecc6f161a17205dcf5f195f4dae3d41e9c2e6bd7df6  -o yaml >> catalog/index.yaml
+ 1198  opm render quay.io/olmqe/nginx-ok-bundle@sha256:d089e2e7d8ef8f19ed03a4e2332c1af5cff750c0835e53106190ced1a8179b98  -o yaml >> catalog/index.yaml
+ 1199  opm render quay.io/olmqe/nginx-ok-bundle@sha256:534699a0ab599988695fa9af10628c8e067fdedadcf4d7145215d4684cf1b12f  -o yaml >> catalog/index.yaml
+ 1200  opm render quay.io/olmqe/nginx-ok-bundle@sha256:15c4df07c00683a4efcf55c2e009557925b3994b75203941f8b6a9519b658742  -o yaml >> catalog/index.yaml
+
+ 1246  docker buildx build . --push --platform linux/amd64 -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+ 1248  docker buildx build . --push --platform linux/amd64,linux/arm64 -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+ 1249  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+ 1250  docker buildx build . --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x -f catalog.Dockerfile -t quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+
+
