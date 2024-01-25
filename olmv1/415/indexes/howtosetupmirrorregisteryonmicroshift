@@ -7,10 +7,13 @@ step1: create mirror registry on VM
 1, generate user and passwd following the above link. here I use existing one.
 [redhat@dhcp-1-235-13 ~]$ mkdir -p /home/redhat/auth
 [redhat@dhcp-1-235-13 ~]$ vi /home/redhat/auth/htpasswd
+# copy it from /data/jian/auth
 2, generate cert with the hostname of VM. NOTE: please remember to change hostname
 [redhat@dhcp-1-235-13 ~]$ mkdir -p /home/redhat/certs
 [redhat@dhcp-1-235-13 ~]$ hostname
 dhcp-1-235-13.arm.eng.rdu2.redhat.com
+#if hostname is microshift-dev.local, could vi /etc/hosts to add ip
+# like 10.1.235.16	dhcp-1-235-16.arm.eng.rdu2.redhat.com
 [redhat@dhcp-1-235-13 ~]$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout /home/redhat/certs/domain.key -x509 -days 3650 -out /home/redhat/certs/domain.crt -subj "/CN=dhcp-1-235-13.arm.eng.rdu2.redhat.com" -addext "subjectAltName = DNS:dhcp-1-235-13.arm.eng.rdu2.redhat.com"
 ..............+...+............+..+...+...+......+.+..+...+.........+.+...+..+...+....+........+....+...+..+.........+.......+........+....+...+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+...+...+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+......+........+..........+......+......+..+............+.+.....+.............+......+...+......+............+...+..+...+....+.....+.......+......+..+..........+..+...+......+...................+..+.............+..+...+...............+......+.......+...............+...+.....+.+...........+...+..........+..+...+.........+.........................+...+.........+.....+.+........+.+.....+......+...+.......+....................+.........+...+.+......+...........+...............+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 .+.....+....+...+......+...........+.+..+.....................+.+...........+.........+.+..+.+.....+.........+...+...+.......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*........+..........+..+....+...+..+...+.+..+....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*....+....+.....+......+.............+......+..+.......+........+....+......+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -53,6 +56,7 @@ or
 take command to generate
 echo -n "user:passwd"|base64 -w0
 6, try to mirror the images and check it on the VM
+#if we use oc adm mirror:
 [redhat@dhcp-1-235-13 ~]$ oc adm catalog mirror quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000 --manifests-only
 src image has index label for declarative configs path: /configs/
 using index path mapping: /configs/:/tmp/1376091201
@@ -75,6 +79,83 @@ dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/
 sha256:03f890334f4e6ff643c246cf22bb9d0273d1a59e535ae18c0806335be628e4ad dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
 info: Mirroring completed in 16.74s (8.834kB/s)
 [redhat@dhcp-1-235-13 ~]$ 
+
+-----
+if we use oc-mirror:
+[redhat@microshift-dev ~]$ curl -s -k https://mirror2.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/oc-mirror.tar.gz -o oc-mirror.tar.gz
+[redhat@microshift-dev ~]$ pwd
+/home/redhat
+[redhat@microshift-dev ~]$ tar vaxf oc-mirror.tar.gz 
+oc-mirror
+[redhat@microshift-dev ~]$ chmod 755 oc-mirror
+[redhat@microshift-dev ~]$ export PATH=/home/redhat:$PATH
+[redhat@microshift-dev ~]$ vi indexmirror.yaml
+[redhat@microshift-dev ~]$ cat indexmirror.yaml 
+apiVersion: mirror.openshift.io/v1alpha2
+kind: ImageSetConfiguration
+mirror:
+  operators:
+    - catalog: quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+      packages:
+        - name: nginx-ok1-1399
+[redhat@microshift-dev ~]$ oc mirror --config ./indexmirror.yaml docker://dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000 
+Logging to .oc-mirror.log
+Checking push permissions for dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000
+Creating directory: oc-mirror-workspace/src/publish
+Creating directory: oc-mirror-workspace/src/v2
+Creating directory: oc-mirror-workspace/src/charts
+Creating directory: oc-mirror-workspace/src/release-signatures
+backend is not configured in ./indexmirror.yaml, using stateless mode
+backend is not configured in ./indexmirror.yaml, using stateless mode
+No metadata detected, creating new workspace
+bundle : pinning related image gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0 to digest
+bundle : pinning related image gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0 to digest
+bundle : pinning related image gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0 to digest
+bundle : pinning related image gcr.io/kubebuilder/kube-rbac-proxy:v0.13.0 to digest
+wrote mirroring manifests to oc-mirror-workspace/operators.1706161048/manifests-nginx-ok-index
+...
+sha256:24aafc29fc912295a46b1cd78386c32333114472307ae05c4fa3916bf5011db3 dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-bundle:6db9d6e2
+info: Mirroring completed in 13.09s (58.26MB/s)
+Rendering catalog image "dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new" with file-based catalog 
+Writing image mapping to oc-mirror-workspace/results-1706161078/mapping.txt
+Writing CatalogSource manifests to oc-mirror-workspace/results-1706161078
+Writing ICSP manifests to oc-mirror-workspace/results-1706161078
+[redhat@microshift-dev ~]$ cat oc-mirror-workspace/results-1706161078/
+catalogSource-cs-nginx-ok-index.yaml  charts/                               imageContentSourcePolicy.yaml         mapping.txt                           release-signatures/                   
+[redhat@microshift-dev ~]$ cat oc-mirror-workspace/results-1706161078/catalogSource-cs-nginx-ok-index.yaml 
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: cs-nginx-ok-index
+  namespace: openshift-marketplace
+spec:
+  image: dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+  sourceType: grpc
+[redhat@microshift-dev ~]$ cat oc-mirror-workspace/results-1706161078/imageContentSourcePolicy.yaml 
+---
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  labels:
+    operators.openshift.org/catalog: "true"
+  name: operator-0
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/kubebuilder
+    source: gcr.io/kubebuilder
+  - mirrors:
+    - dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe
+    source: quay.io/olmqe
+[redhat@microshift-dev ~]$ cat oc-mirror-workspace/results-1706161078/mapping.txt 
+gcr.io/kubebuilder/kube-rbac-proxy@sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f=dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/kubebuilder/kube-rbac-proxy:580b23fc
+quay.io/olmqe/nginx-operator-base@sha256:1ab7861822cb39f0bf13c7640eb957b4cc16aee10f6cbd5b9daa2deaedc37fe5=dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-operator-base:460f384e
+quay.io/olmqe/nginx-ok-bundle@sha256:24aafc29fc912295a46b1cd78386c32333114472307ae05c4fa3916bf5011db3=dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-bundle:6db9d6e2
+quay.io/olmqe/nginx-ok-bundle@sha256:90c481198f5322f3cb55842c2bd3f5b564372bca8ba39bb3065d26ec42d88390=dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-bundle:60fbf2
+quay.io/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new=dhcp-1-235-16.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
+
+-----
+
 redhat@dhcp-1-235-13 ~]$ curl -k --user <user>:<passwd> https://dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/v2/_catalog
 {"repositories":["kubebuilder/kube-rbac-proxy","olmqe/nginx-ok-bundle","olmqe/nginx-ok-index","olmqe/nginx-operator-base"]}
 [redhat@dhcp-1-235-13 ~]$ podman pull dhcp-1-235-13.arm.eng.rdu2.redhat.com:5000/olmqe/nginx-ok-index:v1399-fbc-multi-digest-new
@@ -293,6 +374,55 @@ Name:	quay.io
 Address: 2600:1f18:483:cf02:8a6c:2889:ffc:a4a5
 Name:	quay.io
 Address: 2600:1f18:483:cf00:5abd:e2ed:3fd6:3b0d
+# if there is no nslookup, could use curl -I quay.io -v to get ip
+sh-5.1# curl -I quay.io -v
+*   Trying 2600:1f18:483:cf01:38e8:ac13:ba51:a50f:80...
+* connect to 2600:1f18:483:cf01:38e8:ac13:ba51:a50f port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf01:3163:5521:b626:f053:80...
+* connect to 2600:1f18:483:cf01:3163:5521:b626:f053 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:be30:732f:fce0:8071:80...
+* connect to 2600:1f18:483:cf02:be30:732f:fce0:8071 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf00:7537:5448:7f94:23ef:80...
+* connect to 2600:1f18:483:cf00:7537:5448:7f94:23ef port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:2c4a:d3be:ee53:e272:80...
+* connect to 2600:1f18:483:cf02:2c4a:d3be:ee53:e272 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf00:682e:38ee:fbf1:24cb:80...
+* connect to 2600:1f18:483:cf00:682e:38ee:fbf1:24cb port 80 failed: Network is unreachable
+*   Trying 54.196.214.155:80...
+* Connected to quay.io (54.196.214.155) port 80 (#0)
+sh-5.1# iptables -A OUTPUT -d 54.196.214.155 -j DROP
+sh-5.1# curl -I quay.io -v
+*   Trying 2600:1f18:483:cf01:3163:5521:b626:f053:80...
+* connect to 2600:1f18:483:cf01:3163:5521:b626:f053 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:be30:732f:fce0:8071:80...
+* connect to 2600:1f18:483:cf02:be30:732f:fce0:8071 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:2c4a:d3be:ee53:e272:80...
+* connect to 2600:1f18:483:cf02:2c4a:d3be:ee53:e272 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf01:38e8:ac13:ba51:a50f:80...
+* connect to 2600:1f18:483:cf01:38e8:ac13:ba51:a50f port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf00:7537:5448:7f94:23ef:80...
+* connect to 2600:1f18:483:cf00:7537:5448:7f94:23ef port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf00:682e:38ee:fbf1:24cb:80...
+* connect to 2600:1f18:483:cf00:682e:38ee:fbf1:24cb port 80 failed: Network is unreachable
+*   Trying 52.86.14.196:80...
+* Connected to quay.io (52.86.14.196) port 80 (#0)
+sh-5.1# iptables -D OUTPUT -d 54.196.214.155 -j DROP
+sh-5.1# iptables -A OUTPUT -d 54.196.214.155,52.86.14.196  -j DROP
+sh-5.1# curl -I quay.io -v
+*   Trying 2600:1f18:483:cf00:682e:38ee:fbf1:24cb:80...
+* connect to 2600:1f18:483:cf00:682e:38ee:fbf1:24cb port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf00:7537:5448:7f94:23ef:80...
+* connect to 2600:1f18:483:cf00:7537:5448:7f94:23ef port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf01:38e8:ac13:ba51:a50f:80...
+* connect to 2600:1f18:483:cf01:38e8:ac13:ba51:a50f port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:2c4a:d3be:ee53:e272:80...
+* connect to 2600:1f18:483:cf02:2c4a:d3be:ee53:e272 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf02:be30:732f:fce0:8071:80...
+* connect to 2600:1f18:483:cf02:be30:732f:fce0:8071 port 80 failed: Network is unreachable
+*   Trying 2600:1f18:483:cf01:3163:5521:b626:f053:80...
+* connect to 2600:1f18:483:cf01:3163:5521:b626:f053 port 80 failed: Network is unreachable
+*   Trying 52.86.14.196:80...
+^C
 
 sh-5.1# curl quay.io                                                                                  
 <html>
