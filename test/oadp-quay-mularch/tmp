@@ -1,0 +1,67 @@
+kuiwang(20221109):
+2, support team auto
+
+kuiwang(20221108):
+2, support team auto
+4, research https://github.com/openshift/release/pull/33471
+
+kuiwang(20221107):
+2, support team auto
+3, learn ginkgo
+
+kuiwang(20221104):
+2, upgrade ci watcher
+3, check failed case
+5, support team auto
+
+2, check https://github.com/openshift/openshift-tests-private/pull/5822
+3, check failed case
+4, support team auto
+5, interview
+
+
+
+
+
+catsrcImageTemplate = filepath.Join(buildPruningBaseDir, "catalogsource-image.yaml")
+
+catsrc = catalogSourceDescription{
+				name:        "catsrc-operator",
+				namespace:   "",
+				displayName: "Test Catsrc Operators",
+				publisher:   "Red Hat",
+				sourceType:  "grpc",
+				address:     "quay.io/olmqe/olm-index:OLM-2378-Oadp-GoodOne",
+				template:    catsrcImageTemplate,
+			}
+
+subD = subscriptionDescription{
+				subName:                "oadp-operator",
+				namespace:              "",
+				channel:                "alpha",
+				ipApproval:             "Automatic",
+				operatorPackage:        "oadp-operator",
+				catalogSourceName:      catsrc.name,
+				catalogSourceNamespace: "",
+				startingCSV:            "",
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        true,
+			}
+
+catsrc.namespace = oc.Namespace()
+		sub.catalogSourceNamespace = catsrc.namespace
+
+		g.By("create catalog source")
+		catsrc.createWithCheck(oc, itName, dr)
+
+
+
+
+1, verify PR 40+
+2, maintain prow ci and jenkins pipeline
+3, upgrade ci watcher
+4, support team auto
+5, check failed cases
+6, interview

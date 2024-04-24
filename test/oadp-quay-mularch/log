@@ -1,0 +1,617 @@
+[root@preserve-olm-env2 oadp-operator]# vi 0.5.4-csvfail/manifests/oadp-operator.clusterserviceversion.yaml 
+[root@preserve-olm-env2 oadp-operator]# vi 0.5.5-ipfail/manifests/oadp-operator.clusterserviceversion.yaml 
+[root@preserve-olm-env2 oadp-operator]# diff 0.5.5/manifests/oadp-operator.clusterserviceversion.yaml 0.5.5-ipfail/manifests/oadp-operator.clusterserviceversion.yaml
+179c179
+<   name: oadp-operator.v0.5.5
+---
+>   name: oadp~operator.v0.5.5
+[root@preserve-olm-env2 oadp-operator]# diff 0.5.4/manifests/oadp-operator.clusterserviceversion.yaml 0.5.4-csvfail/manifests/oadp-operator.clusterserviceversion.yaml
+501c501
+<                     image: quay.io/konveyor/oadp-operator@sha256:782ff8f5ab43b787a212199072060a20f102f1aaa81aeb4898bc36db22177885
+---
+>                     image: quay.io/konveyor/oadp-operator@sha256:123ff8f5ab43b787a212199072060a20f102f1aaa81aeb4898bc36db22177885
+[root@preserve-olm-env2 oadp-operator]# 
+
+
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.3/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.3/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.3-2378 -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.3/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.3/manifests /manifests/
+--> d0d291e171a
+STEP 9/9: COPY oadp-operator/0.5.3/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.3-2378
+--> 0b13a2b8fbd
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378
+0b13a2b8fbd99b7568c3b2e5bd979f69d185325b9d41bda135c6c15e772cf695
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.3/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378
+Getting image source signatures
+Copying blob 64cf7c3e86b1 done  
+Copying blob 10e94d9433da done  
+Copying config 0b13a2b8fb done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.4/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.4/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.4-2378 -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.4/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache f45b72869753fd8c3a5fb7249325f5a43a2a427d34b907805ba10a8f3dbf4733
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache f9e830c0e78016274f6465f48248b23f9397c3bb9204bf5ca177f00f6662beec
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache e4acf36aef5bcb6928f54106387bfcfa89aecab1b7be162dc7c9de651e13d89c
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.4/manifests /manifests/
+--> aeaacf04367
+STEP 9/9: COPY oadp-operator/0.5.4/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.4-2378
+--> 3797598f8ff
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378
+3797598f8ff1fd84cfa44557f7b1ba4a7ba0b22f635359bda292c875c16f2b9e
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.4/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.4-2378
+Getting image source signatures
+Copying blob c823f8925917 done  
+Copying blob 700099fd6737 done  
+Copying config 3797598f8f done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.5/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.5/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.5-2378 -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.5/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache f45b72869753fd8c3a5fb7249325f5a43a2a427d34b907805ba10a8f3dbf4733
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache f9e830c0e78016274f6465f48248b23f9397c3bb9204bf5ca177f00f6662beec
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache e4acf36aef5bcb6928f54106387bfcfa89aecab1b7be162dc7c9de651e13d89c
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.5/manifests /manifests/
+--> 77616ce1a3d
+STEP 9/9: COPY oadp-operator/0.5.5/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.5-2378
+--> cb014ff3cb2
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.5-2378
+cb014ff3cb23c8f40ae041791c329f4341994713e3870b9ce964e3aa706265ee
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.5/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.5-2378
+Getting image source signatures
+Copying blob 33a00b821aeb done  
+Copying blob 0ddf9d332228 done  
+Copying config cb014ff3cb done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.6/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.6/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.6-2378 -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.6/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache f45b72869753fd8c3a5fb7249325f5a43a2a427d34b907805ba10a8f3dbf4733
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache f9e830c0e78016274f6465f48248b23f9397c3bb9204bf5ca177f00f6662beec
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache e4acf36aef5bcb6928f54106387bfcfa89aecab1b7be162dc7c9de651e13d89c
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.6/manifests /manifests/
+--> 91dcf3411a5
+STEP 9/9: COPY oadp-operator/0.5.6/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.6-2378
+--> 6b1e4b574a8
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.6-2378
+6b1e4b574a88579192513263834ab6b4ecdc0064678fd6a34e2dfb370208d158
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.6/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.6-2378
+Getting image source signatures
+Copying blob b918a7030e02 done  
+Copying blob e254ad4f4f2d done  
+Copying config 6b1e4b574a done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+
+[root@preserve-olm-env2 oadp]# opm index add -b quay.io/olmqe/oadp-operator:v0.5.3-2378,quay.io/olmqe/oadp-operator:v0.5.4-2378,quay.io/olmqe/oadp-operator:v0.5.5-2378,quay.io/olmqe/oadp-operator:v0.5.6-2378 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-Good -c podman --mode semver
+WARN[0000] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+INFO[0000] building the index                            bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0000] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.3-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0003] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0003] Could not find optional dependencies file     file=bundle_tmp2219184855/metadata load=annotations with=./bundle_tmp2219184855
+INFO[0003] Could not find optional properties file       file=bundle_tmp2219184855/metadata load=annotations with=./bundle_tmp2219184855
+INFO[0003] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.4-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0006] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0006] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0007] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0007] Could not find optional dependencies file     file=bundle_tmp352205467/metadata load=annotations with=./bundle_tmp352205467
+INFO[0007] Could not find optional properties file       file=bundle_tmp352205467/metadata load=annotations with=./bundle_tmp352205467
+INFO[0007] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.5-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0010] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0010] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0010] Could not find optional dependencies file     file=bundle_tmp3728394032/metadata load=annotations with=./bundle_tmp3728394032
+INFO[0010] Could not find optional properties file       file=bundle_tmp3728394032/metadata load=annotations with=./bundle_tmp3728394032
+INFO[0010] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.6-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] Could not find optional dependencies file     file=bundle_tmp969135381/metadata load=annotations with=./bundle_tmp969135381
+INFO[0013] Could not find optional properties file       file=bundle_tmp969135381/metadata load=annotations with=./bundle_tmp969135381
+INFO[0013] Could not find optional dependencies file     file=bundle_tmp3728394032/metadata load=annotations with=./bundle_tmp3728394032
+INFO[0013] Could not find optional properties file       file=bundle_tmp3728394032/metadata load=annotations with=./bundle_tmp3728394032
+INFO[0013] Could not find optional dependencies file     file=bundle_tmp969135381/metadata load=annotations with=./bundle_tmp969135381
+INFO[0013] Could not find optional properties file       file=bundle_tmp969135381/metadata load=annotations with=./bundle_tmp969135381
+INFO[0013] Could not find optional dependencies file     file=bundle_tmp2219184855/metadata load=annotations with=./bundle_tmp2219184855
+INFO[0013] Could not find optional properties file       file=bundle_tmp2219184855/metadata load=annotations with=./bundle_tmp2219184855
+INFO[0013] Could not find optional dependencies file     file=bundle_tmp352205467/metadata load=annotations with=./bundle_tmp352205467
+INFO[0013] Could not find optional properties file       file=bundle_tmp352205467/metadata load=annotations with=./bundle_tmp352205467
+INFO[0013] Generating dockerfile                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] writing dockerfile: ./index.Dockerfile4026467180  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] running podman build                          bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0013] [podman build --format docker -f ./index.Dockerfile4026467180 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-Good .]  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378 quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-Good
+Getting image source signatures
+Copying blob f9014c6ce480 done  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying config b2ef20b016 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# ls
+oadp-operator
+[root@preserve-olm-env2 oadp]# mkdir index
+[root@preserve-olm-env2 oadp]# opm render quay.io/olmqe/olm-index:OLM-2378-Oadp-Good > index/index.yaml
+WARN[0001] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+[root@preserve-olm-env2 oadp]# vi index/index.yaml 
+[root@preserve-olm-env2 oadp]# opm generate dockerfile index/
+[root@preserve-olm-env2 oadp]# podman build -t quay.io/olmqe/olm-index:OLM-2378-Oadp-Good -f index.Dockerfile 
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> Using cache 399d0bbc15981d0e237555a78839a91f7041916b393fac3de21302f33b4a40f4
+--> 399d0bbc159
+STEP 3/5: CMD ["serve", "/configs"]
+--> Using cache 159656ff98b1e9407f4eb8f16db0ef5f335d12384505e80849a93eaf695d18ea
+--> 159656ff98b
+STEP 4/5: ADD index /configs
+--> b3eff5879d6
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-Good
+--> 9c1d797f143
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-Good
+9c1d797f1438531716e1da3c03ef20f930e11dfa934f9a737f3b74096f8ce578
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-Good
+Getting image source signatures
+Copying blob a56022e0a467 done  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying config 9c1d797f14 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.4-csvfail/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.4-csvfail/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.4-csvfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache f45b72869753fd8c3a5fb7249325f5a43a2a427d34b907805ba10a8f3dbf4733
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache f9e830c0e78016274f6465f48248b23f9397c3bb9204bf5ca177f00f6662beec
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache e4acf36aef5bcb6928f54106387bfcfa89aecab1b7be162dc7c9de651e13d89c
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.4-csvfail/manifests /manifests/
+--> e480646f666
+STEP 9/9: COPY oadp-operator/0.5.4-csvfail/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+--> a1dbf630325
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+a1dbf630325ff83719fcdf8388ea39219599495cfc3c1608a1c1605915788a9b
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.4-csvfail/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+Getting image source signatures
+Copying blob b418f2475515 done  
+Copying blob 16bfd040df26 done  
+Copying config a1dbf63032 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.5-ipfail/metadata/
+[root@preserve-olm-env2 oadp]# opm alpha bundle build -d oadp-operator/0.5.5-ipfail/manifests/ -t quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp/oadp-operator/0.5.5-ipfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp 
+INFO[0000] Building bundle image                        
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache dd7a2b92417b101b009f59fbd6ca0625f7d023603b7aaaa1c79848be5f3a4b87
+--> dd7a2b92417
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 9bdc710af1f680f1c68b80f3c01e10f7d20e98d403f42df373e24289133157e9
+--> 9bdc710af1f
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache 55d70b93358db537b7bec7bd65c83abc378fa97e5ffafb9f2b9a589707cb8e51
+--> 55d70b93358
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache f45b72869753fd8c3a5fb7249325f5a43a2a427d34b907805ba10a8f3dbf4733
+--> f45b7286975
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache f9e830c0e78016274f6465f48248b23f9397c3bb9204bf5ca177f00f6662beec
+--> f9e830c0e78
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache e4acf36aef5bcb6928f54106387bfcfa89aecab1b7be162dc7c9de651e13d89c
+--> e4acf36aef5
+STEP 8/9: COPY oadp-operator/0.5.5-ipfail/manifests /manifests/
+--> 2ad9996c4cd
+STEP 9/9: COPY oadp-operator/0.5.5-ipfail/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+--> c9b5542e511
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+c9b5542e511b8a9a338db1a4d550570d362650c8118a7a4cd74dbe4e6f671107
+[root@preserve-olm-env2 oadp]# rm -fr bundle.Dockerfile oadp-operator/0.5.5-ipfail/metadata/
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+Getting image source signatures
+Copying blob 941f96d1601e done  
+Copying blob f42f3d9a8ddd done  
+Copying config c9b5542e51 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+
+[root@preserve-olm-env2 oadp]# opm index add -b quay.io/olmqe/oadp-operator:v0.5.3-2378,quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail,quay.io/olmqe/oadp-operator:v0.5.6-2378 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail -c podman --mode semver
+WARN[0000] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+INFO[0000] building the index                            bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0000] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.3-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0003] Could not find optional dependencies file     file=bundle_tmp400113768/metadata load=annotations with=./bundle_tmp400113768
+INFO[0003] Could not find optional properties file       file=bundle_tmp400113768/metadata load=annotations with=./bundle_tmp400113768
+INFO[0003] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0006] Could not find optional dependencies file     file=bundle_tmp4049169690/metadata load=annotations with=./bundle_tmp4049169690
+INFO[0006] Could not find optional properties file       file=bundle_tmp4049169690/metadata load=annotations with=./bundle_tmp4049169690
+INFO[0006] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.6-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp963485018/metadata load=annotations with=./bundle_tmp963485018
+INFO[0009] Could not find optional properties file       file=bundle_tmp963485018/metadata load=annotations with=./bundle_tmp963485018
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp400113768/metadata load=annotations with=./bundle_tmp400113768
+INFO[0009] Could not find optional properties file       file=bundle_tmp400113768/metadata load=annotations with=./bundle_tmp400113768
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp4049169690/metadata load=annotations with=./bundle_tmp4049169690
+INFO[0009] Could not find optional properties file       file=bundle_tmp4049169690/metadata load=annotations with=./bundle_tmp4049169690
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp963485018/metadata load=annotations with=./bundle_tmp963485018
+INFO[0009] Could not find optional properties file       file=bundle_tmp963485018/metadata load=annotations with=./bundle_tmp963485018
+INFO[0009] Generating dockerfile                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] writing dockerfile: ./index.Dockerfile2886796427  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] running podman build                          bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] [podman build --format docker -f ./index.Dockerfile2886796427 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail .]  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail
+Getting image source signatures
+Copying blob cbdfb7a82106 done  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying config fb5d8498e3 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# mkdir indexcsvfail
+[root@preserve-olm-env2 oadp]# opm render quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail > indexcsvfail/index.yaml
+WARN[0001] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+[root@preserve-olm-env2 oadp]# vi indexcsvfail/index.yaml 
+[root@preserve-olm-env2 oadp]# opm generate dockerfile indexcsvfail/
+[root@preserve-olm-env2 oadp]# podman build -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail -f indexcsvfail.Dockerfile 
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> Using cache 399d0bbc15981d0e237555a78839a91f7041916b393fac3de21302f33b4a40f4
+--> 399d0bbc159
+STEP 3/5: CMD ["serve", "/configs"]
+--> Using cache 159656ff98b1e9407f4eb8f16db0ef5f335d12384505e80849a93eaf695d18ea
+--> 159656ff98b
+STEP 4/5: ADD indexcsvfail /configs
+--> 8493703b836
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail
+--> 9745b08f459
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail
+9745b08f459f623c1c5b7c570e34d2c718ddba8f958ce5c79475ba5c94ce7a45
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail
+Getting image source signatures
+Copying blob 229677ef54cf done  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 0d6867937695 skipped: already exists  
+Copying config 9745b08f45 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+[root@preserve-olm-env2 oadp]# opm index add -b quay.io/olmqe/oadp-operator:v0.5.3-2378,quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail,quay.io/olmqe/oadp-operator:v0.5.6-2378 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail -c podman --mode semver
+WARN[0000] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+INFO[0000] building the index                            bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0000] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.3-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0003] Could not find optional dependencies file     file=bundle_tmp4077885803/metadata load=annotations with=./bundle_tmp4077885803
+INFO[0003] Could not find optional properties file       file=bundle_tmp4077885803/metadata load=annotations with=./bundle_tmp4077885803
+INFO[0003] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0006] Could not find optional dependencies file     file=bundle_tmp2995015287/metadata load=annotations with=./bundle_tmp2995015287
+INFO[0006] Could not find optional properties file       file=bundle_tmp2995015287/metadata load=annotations with=./bundle_tmp2995015287
+INFO[0006] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.6-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp1906973724/metadata load=annotations with=./bundle_tmp1906973724
+INFO[0009] Could not find optional properties file       file=bundle_tmp1906973724/metadata load=annotations with=./bundle_tmp1906973724
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp4077885803/metadata load=annotations with=./bundle_tmp4077885803
+INFO[0009] Could not find optional properties file       file=bundle_tmp4077885803/metadata load=annotations with=./bundle_tmp4077885803
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp2995015287/metadata load=annotations with=./bundle_tmp2995015287
+INFO[0009] Could not find optional properties file       file=bundle_tmp2995015287/metadata load=annotations with=./bundle_tmp2995015287
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp1906973724/metadata load=annotations with=./bundle_tmp1906973724
+INFO[0009] Could not find optional properties file       file=bundle_tmp1906973724/metadata load=annotations with=./bundle_tmp1906973724
+INFO[0009] Generating dockerfile                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] writing dockerfile: ./index.Dockerfile2073941624  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] running podman build                          bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] [podman build --format docker -f ./index.Dockerfile2073941624 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail .]  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail
+Getting image source signatures
+Copying blob 65729bdefdcd done  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying config 71313f202e done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# mkdir indexipfail
+[root@preserve-olm-env2 oadp]# opm render quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail > indexipfail/index.yaml
+WARN[0001] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+[root@preserve-olm-env2 oadp]# vi indexipfail/index.yaml 
+[root@preserve-olm-env2 oadp]# opm generate dockerfile indexipfail/
+[root@preserve-olm-env2 oadp]# podman build -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail  -f indexipfail.Dockerfile 
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> Using cache 399d0bbc15981d0e237555a78839a91f7041916b393fac3de21302f33b4a40f4
+--> 399d0bbc159
+STEP 3/5: CMD ["serve", "/configs"]
+--> Using cache 159656ff98b1e9407f4eb8f16db0ef5f335d12384505e80849a93eaf695d18ea
+--> 159656ff98b
+STEP 4/5: ADD indexipfail /configs
+--> 1e5efb05b16
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail
+--> 60837be422b
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail
+60837be422b4930e33e3aacce864fa43cd9e6cfda5b7fd398d89e8178997f09f
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfail 
+Getting image source signatures
+Copying blob 2b30d799b124 done  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying config 60837be422 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+
+[root@preserve-olm-env2 oadp]# opm index add -b quay.io/olmqe/oadp-operator:v0.5.3-2378,quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail,quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail,quay.io/olmqe/oadp-operator:v0.5.6-2378 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail -c podman --mode semver
+WARN[0000] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+INFO[0000] building the index                            bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0000] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.3-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0002] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0003] Could not find optional dependencies file     file=bundle_tmp724032374/metadata load=annotations with=./bundle_tmp724032374
+INFO[0003] Could not find optional properties file       file=bundle_tmp724032374/metadata load=annotations with=./bundle_tmp724032374
+INFO[0003] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0005] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0006] Could not find optional dependencies file     file=bundle_tmp2057296648/metadata load=annotations with=./bundle_tmp2057296648
+INFO[0006] Could not find optional properties file       file=bundle_tmp2057296648/metadata load=annotations with=./bundle_tmp2057296648
+INFO[0006] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0008] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0009] Could not find optional dependencies file     file=bundle_tmp2599453892/metadata load=annotations with=./bundle_tmp2599453892
+INFO[0009] Could not find optional properties file       file=bundle_tmp2599453892/metadata load=annotations with=./bundle_tmp2599453892
+INFO[0009] running /usr/bin/podman pull quay.io/olmqe/oadp-operator:v0.5.6-2378  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0011] running podman create                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0011] running podman cp                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0012] running podman rm                             bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp3873897980/metadata load=annotations with=./bundle_tmp3873897980
+INFO[0012] Could not find optional properties file       file=bundle_tmp3873897980/metadata load=annotations with=./bundle_tmp3873897980
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp2057296648/metadata load=annotations with=./bundle_tmp2057296648
+INFO[0012] Could not find optional properties file       file=bundle_tmp2057296648/metadata load=annotations with=./bundle_tmp2057296648
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp2599453892/metadata load=annotations with=./bundle_tmp2599453892
+INFO[0012] Could not find optional properties file       file=bundle_tmp2599453892/metadata load=annotations with=./bundle_tmp2599453892
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp3873897980/metadata load=annotations with=./bundle_tmp3873897980
+INFO[0012] Could not find optional properties file       file=bundle_tmp3873897980/metadata load=annotations with=./bundle_tmp3873897980
+INFO[0012] Could not find optional dependencies file     file=bundle_tmp724032374/metadata load=annotations with=./bundle_tmp724032374
+INFO[0012] Could not find optional properties file       file=bundle_tmp724032374/metadata load=annotations with=./bundle_tmp724032374
+INFO[0012] Generating dockerfile                         bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0012] writing dockerfile: ./index.Dockerfile863553338  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0012] running podman build                          bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+INFO[0012] [podman build --format docker -f ./index.Dockerfile863553338 -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail .]  bundles="[quay.io/olmqe/oadp-operator:v0.5.3-2378 quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail quay.io/olmqe/oadp-operator:v0.5.6-2378]"
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail
+Getting image source signatures
+Copying blob ca4a14a649d5 done  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying blob 0d6867937695 skipped: already exists  
+Copying config c8741c79ba done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# mkdir indexcsvipfail
+[root@preserve-olm-env2 oadp]# opm render quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail > indexcsvipfail/index.yaml
+WARN[0006] DEPRECATION NOTICE:
+Sqlite-based catalogs and their related subcommands are deprecated. Support for
+them will be removed in a future release. Please migrate your catalog workflows
+to the new file-based catalog format. 
+[root@preserve-olm-env2 oadp]# vi indexcsvipfail/index.yaml 
+[root@preserve-olm-env2 oadp]# opm generate dockerfile indexcsvipfail/
+[root@preserve-olm-env2 oadp]# podman build -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail -f indexcsvipfail.Dockerfile 
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> Using cache 399d0bbc15981d0e237555a78839a91f7041916b393fac3de21302f33b4a40f4
+--> 399d0bbc159
+STEP 3/5: CMD ["serve", "/configs"]
+--> Using cache 159656ff98b1e9407f4eb8f16db0ef5f335d12384505e80849a93eaf695d18ea
+--> 159656ff98b
+STEP 4/5: ADD indexcsvipfail /configs
+--> 14e31e3331c
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail
+--> 742f5b848cd
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail
+742f5b848cd6f7f90a4c2d663b4d64ceaf98eada61e0275b2e11eff8634a23d6
+[root@preserve-olm-env2 oadp]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvipfail
+Getting image source signatures
+Copying blob 8252f43f89c0 done  
+Copying blob 457de0330aa6 skipped: already exists  
+Copying blob 5b1fa8e3e100 skipped: already exists  
+Copying blob eeaf5a4136cb skipped: already exists  
+Copying blob 0d6867937695 skipped: already exists  
+Copying blob 324075f0d95e skipped: already exists  
+Copying config 742f5b848c done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp]# 
+
+

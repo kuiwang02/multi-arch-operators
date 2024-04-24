@@ -1,0 +1,385 @@
+kuiwang@Kuis-MacBook-Pro oadp-operator % opm alpha bundle generate -d 0.5.3/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator/0.5.3/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator 
+kuiwang@Kuis-MacBook-Pro oadp-operator % ls
+0.2.3			0.3.0			0.4.2			0.5.2			0.5.4-csvfail		0.5.6
+0.2.5			0.4.0			0.5.0			0.5.3			0.5.5			bundle.Dockerfile
+0.2.6			0.4.1			0.5.1			0.5.4			0.5.5-ipfail		ci.yaml
+kuiwang@Kuis-MacBook-Pro oadp-operator % cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.3/manifests /manifests/
+COPY 0.5.3/metadata /metadata/
+
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx create --name mybuilder
+mybuilder
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx ls
+NAME/NODE       DRIVER/ENDPOINT             STATUS   PLATFORMS
+mybuilder       docker-container                     
+  mybuilder0    unix:///var/run/docker.sock inactive 
+desktop-linux   docker                               
+  desktop-linux desktop-linux               running  linux/amd64, linux/arm64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/arm/v7, linux/arm/v6
+default *       docker                               
+  default       default                     running  linux/amd64, linux/arm64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/arm/v7, linux/arm/v6
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx use mybuilder
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx inspect --bootstrap
+[+] Building 36.9s (1/1) FINISHED                                                                                                                                                                     
+ => [internal] booting buildkit                                                                                                                                                                 36.9s
+ => => pulling image moby/buildkit:buildx-stable-1                                                                                                                                              34.7s
+ => => creating container buildx_buildkit_mybuilder0                                                                                                                                             2.2s
+Name:   mybuilder
+Driver: docker-container
+
+Nodes:
+Name:      mybuilder0
+Endpoint:  unix:///var/run/docker.sock
+Status:    running
+Platforms: linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/arm64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/mips64le, linux/mips64, linux/arm/v7, linux/arm/v6
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.3-2378            
+[+] Building 8.6s (8/9)                                                                                                                                                                               
+ => [internal] load build definition from bundle.Dockerfile                                                                                                                                      0.1s
+ => => transferring dockerfile: 528B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [internal] load build context                                                                                                                                                                0.1s
+ => => transferring context: 273.40kB                                                                                                                                                            0.0s
+ => [linux/amd64 1/2] COPY 0.5.3/manifests /manifests/                                                                                                                                           0.0s
+ => CACHED [linux/arm64 1/2] COPY 0.5.3/manifests /manifests/                                                                                                                                    0.0s
+ => [linux/arm64 2/2] COPY 0.5.3/metadata /metadata/                                                                                                                                             0.0s
+ => exporting to image                                                                                                                                                                           8.2s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:2f87dc9f6b7c626918fab0d4c75ed987af5c6718f5746cf4a527b7260fdc050a                                                                                                0.0s
+ => => exporting config sha256:548ae75ad066fb1c77f9a2b8de0268b8907b8178f91b1e1ebbde43e67636b096                                                                                                  0.0s
+ => => exporting manifest sha256:e1b82ec395f3fc59a6eebb2c6ef33c8f8d26518c283dedd7b4e50e40ecfcc881                                                                                                0.0s
+ => => exporting config sha256:7b1342ac902d4eb5508a55e0b104a0781b70ed82ca467c1499c9ffb618c0d4cb                                                                                                  0.0s
+ => => exporting manifest list sha256:df553d3c179a73cc57d3b02567136d4528e1d495fb89900ef5cbb461d28f155a                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            5.8s
+ => => pushing manifest for quay.io/olmqe/oadp-operator:v0.5.3-2378@sha256:df553d3c179a73cc57d3b02567136d4528e1d495fb89900ef5cbb461d28f155a                                                      2.3s
+ => [auth] olmqe/oadp-operator:pull,push token for quay.io                                                                                                                                       0.0s
+kuiwang@Kuis-MacBook-Pro oadp-operator % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-operator % rm -fr bundle.Dockerfile 0.5.3/metadata 
+kuiwang@Kuis-MacBook-Pro oadp-operator % 
+kuiwang@Kuis-MacBook-Pro oadp-operator % opm alpha bundle generate -d 0.5.4-csvfail/manifests/ -p oadp-operator -c alpha -e alpha                              
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator/0.5.4-csvfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator 
+kuiwang@Kuis-MacBook-Pro oadp-operator % cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.4-csvfail/manifests /manifests/
+COPY 0.5.4-csvfail/metadata /metadata/
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+[+] Building 4.9s (6/8)                                                                                                                                                                               
+ => [internal] load build definition from bundle.Dockerfile                                                                                                                                      0.0s
+ => => transferring dockerfile: 544B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 273.95kB                                                                                                                                                            0.0s
+ => [linux/amd64 1/2] COPY 0.5.4-csvfail/manifests /manifests/                                                                                                                                   0.0s
+ => [linux/amd64 2/2] COPY 0.5.4-csvfail/metadata /metadata/                                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                           4.6s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:0bfc7d05196fe48ceac110c8d4f0ca3e6638f9d789ece1188bdef2a52fce5412                                                                                                0.0s
+ => => exporting config sha256:62ada97d2028be5054455acb7fa63df5678f468c115bbb7b99e9acd630554837                                                                                                  0.0s
+ => => exporting manifest sha256:c188508691c1147c942d047326d6b2084919580f5c6967a7a0b9523a0a832b8f                                                                                                0.0s
+ => => exporting config sha256:6178c8c7cefadeef3d1e33ac7aef1364ce189660fe8b566c239f4c6965e760f5                                                                                                  0.0s
+ => => exporting manifest list sha256:de83e9306d872fd8ddf9b5cc9d7fc345c074afdff0f29bb48dce54c553372da4                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            2.4s
+ => => pushing manifest for quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail@sha256:de83e9306d872fd8ddf9b5cc9d7fc345c074afdff0f29bb48dce54c553372da4                                              2.1s
+kuiwang@Kuis-MacBook-Pro oadp-operator % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-operator % rm -fr bundle.Dockerfile 0.5.4-csvfail/metadata 
+kuiwang@Kuis-MacBook-Pro oadp-operator % opm alpha bundle generate -d 0.5.5-ipfail/manifests/ -p oadp-operator -c alpha -e alpha                                       
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator/0.5.5-ipfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator 
+kuiwang@Kuis-MacBook-Pro oadp-operator % cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.5-ipfail/manifests /manifests/
+COPY 0.5.5-ipfail/metadata /metadata/
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail 
+[+] Building 5.1s (6/8)                                                                                                                                                                               
+ => [internal] load build definition from bundle.Dockerfile                                                                                                                                      0.0s
+ => => transferring dockerfile: 542B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 271.63kB                                                                                                                                                            0.0s
+ => [linux/arm64 1/2] COPY 0.5.5-ipfail/manifests /manifests/                                                                                                                                    0.0s
+ => [linux/arm64 2/2] COPY 0.5.5-ipfail/metadata /metadata/                                                                                                                                      0.0s
+ => exporting to image                                                                                                                                                                           4.7s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:e472ac2c53676ea317df2a6793b6c25531caa37096cfa1e2799679363e9ac817                                                                                                0.0s
+ => => exporting config sha256:25754b218e9db74003ea981dfcadccd377fbd11bd22f8f23d8e26e8015d454b8                                                                                                  0.0s
+ => => exporting manifest sha256:d3e7a4ba14ec863c7ab9f2ee52d21ef5f63564acc468d0e681a7037303a31b8e                                                                                                0.0s
+ => => exporting config sha256:3c8bde58c9c7c0aa60b91cbe042f025f78458dc09fc7355c4c672ab6f4638e30                                                                                                  0.0s
+ => => exporting manifest list sha256:ecc14d329dfd0d1372235e2fa47eb65379a021216cc2f3e9c61937fd677150ef                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            2.4s
+ => => pushing manifest for quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail@sha256:ecc14d329dfd0d1372235e2fa47eb65379a021216cc2f3e9c61937fd677150ef                                               2.2s
+kuiwang@Kuis-MacBook-Pro oadp-operator % 
+
+kuiwang@Kuis-MacBook-Pro oadp-operator % rm -fr bundle.Dockerfile 0.5.5-ipfail/metadata 
+kuiwang@Kuis-MacBook-Pro oadp-operator % opm alpha bundle generate -d 0.5.6/manifests/ -p oadp-operator -c alpha -e alpha                                              
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator/0.5.6/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /Users/kuiwang/work/localgit/automation/case/OLM-2378/oadp-quay-mularch/oadp-operator 
+kuiwang@Kuis-MacBook-Pro oadp-operator % cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.6/manifests /manifests/
+COPY 0.5.6/metadata /metadata/
+kuiwang@Kuis-MacBook-Pro oadp-operator % docker buildx build . --push --platform linux/amd64,linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.6-2378       
+[+] Building 5.7s (6/8)                                                                                                                                                                               
+ => [internal] load build definition from bundle.Dockerfile                                                                                                                                      0.0s
+ => => transferring dockerfile: 528B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 271.49kB                                                                                                                                                            0.0s
+ => [linux/amd64 1/2] COPY 0.5.6/manifests /manifests/                                                                                                                                           0.0s
+ => [linux/amd64 2/2] COPY 0.5.6/metadata /metadata/                                                                                                                                             0.0s
+ => exporting to image                                                                                                                                                                           5.3s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:c3bcc9053d972151bf60a5493071595e0285af7ef6044579c11fbd891d8895e8                                                                                                0.0s
+ => => exporting config sha256:e7a6cad55bce4c4aba6b39cf6e9ba069ddd2d5d5c24b03af1c5d58969a6bd15f                                                                                                  0.0s
+ => => exporting manifest sha256:a9100edadfa9784820b363b6a624c1d2ae9e7d83b86f3f3645eccc322d5d5027                                                                                                0.0s
+ => => exporting config sha256:e3c297333ba180a70ce0d48a67d3b36b6d1b62e72a3f95ad206550bcc290d285                                                                                                  0.0s
+ => => exporting manifest list sha256:872ad7e98b90d7279d92c35ec3e49d563dcbe54ec0f31e2c83ba21ea0ce4cfe6                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            3.0s
+ => => pushing manifest for quay.io/olmqe/oadp-operator:v0.5.6-2378@sha256:872ad7e98b90d7279d92c35ec3e49d563dcbe54ec0f31e2c83ba21ea0ce4cfe6                                                      2.2s
+kuiwang@Kuis-MacBook-Pro oadp-operator % rm -fr bundle.Dockerfile 0.5.6/metadata 
+kuiwang@Kuis-MacBook-Pro oadp-operator % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % cat indexgoodoneoperator.Dockerfile
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs"]
+
+# Copy declarative config root into image at /configs
+ADD indexgoodoneoperator /configs
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % docker buildx build . --push --platform linux/amd64,linux/arm64 -f indexgoodoneoperator.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-GoodOne
+[+] Building 20.9s (11/11) FINISHED                                                                                                                                                                   
+ => [internal] load build definition from indexgoodoneoperator.Dockerfile                                                                                                                        0.1s
+ => => transferring dockerfile: 531B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [linux/arm64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               2.7s
+ => [linux/amd64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               2.6s
+ => [internal] load build context                                                                                                                                                                0.1s
+ => => transferring context: 11.93kB                                                                                                                                                             0.0s
+ => [linux/arm64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                         0.8s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => => sha256:e356c3668123968ecc452be3907e66381e0f70ae1fb58526abb45a964cee98ff 12.76MB / 12.76MB                                                                                                 1.9s
+ => => sha256:74c820ed26526939add8ca1cacbbffc117c5ef72f02559d2f07ebcee506a787d 159B / 159B                                                                                                       0.4s
+ => => sha256:9b0b231989d91e55caf4bb8d190e37d1684119b016bf689a641729af09223dc8 769.47kB / 769.47kB                                                                                               1.4s
+ => => sha256:97c013daf5264242d040da97e34100ffd2bc8d20e1e75bdcb06ef2917eaeb1ca 3.51MB / 3.51MB                                                                                                   2.2s
+ => => sha256:dbcab61d5a5a806aee6156f2e22c601a52119ca8eaeb8fcd08187f22c35d9b88 803.83kB / 803.83kB                                                                                               1.7s
+ => => extracting sha256:dbcab61d5a5a806aee6156f2e22c601a52119ca8eaeb8fcd08187f22c35d9b88                                                                                                        0.9s
+ => => extracting sha256:9b0b231989d91e55caf4bb8d190e37d1684119b016bf689a641729af09223dc8                                                                                                        0.1s
+ => => extracting sha256:97c013daf5264242d040da97e34100ffd2bc8d20e1e75bdcb06ef2917eaeb1ca                                                                                                        0.2s
+ => => extracting sha256:74c820ed26526939add8ca1cacbbffc117c5ef72f02559d2f07ebcee506a787d                                                                                                        0.0s
+ => => extracting sha256:e356c3668123968ecc452be3907e66381e0f70ae1fb58526abb45a964cee98ff                                                                                                        0.8s
+ => [linux/amd64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                         0.8s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => => sha256:4d013359499f65d58f5b99759a9e438e3c0d3c8363a224635d03edd01ce2b7da 14.13MB / 14.13MB                                                                                                 1.4s
+ => => sha256:0ad12ee8e203827f798d4bf1d5ba8cada8c96f370038f775867ad93674218d85 159B / 159B                                                                                                       0.4s
+ => => sha256:d8546e0ae7025d0b0c665628cfb256333fd9819fe99eb4942c2105f2c7cba7d1 3.81MB / 3.81MB                                                                                                   0.7s
+ => => sha256:09d1345b9a39dc37b41c8c517d4915dc165d3c9d9fb5dc9b689f2a890aae6b83 694.26kB / 694.26kB                                                                                               0.6s
+ => => sha256:2df365faf0e3007f983fadd7a65ba51d41b488eb2ed8fc70f4bf97043cfea560 803.83kB / 803.83kB                                                                                               0.5s
+ => => extracting sha256:2df365faf0e3007f983fadd7a65ba51d41b488eb2ed8fc70f4bf97043cfea560                                                                                                        0.7s
+ => => extracting sha256:09d1345b9a39dc37b41c8c517d4915dc165d3c9d9fb5dc9b689f2a890aae6b83                                                                                                        0.1s
+ => => extracting sha256:d8546e0ae7025d0b0c665628cfb256333fd9819fe99eb4942c2105f2c7cba7d1                                                                                                        0.2s
+ => => extracting sha256:0ad12ee8e203827f798d4bf1d5ba8cada8c96f370038f775867ad93674218d85                                                                                                        0.0s
+ => => extracting sha256:4d013359499f65d58f5b99759a9e438e3c0d3c8363a224635d03edd01ce2b7da                                                                                                        0.8s
+ => [linux/arm64 2/2] ADD indexgoodoneoperator /configs                                                                                                                                          0.3s
+ => [linux/amd64 2/2] ADD indexgoodoneoperator /configs                                                                                                                                          0.1s
+ => exporting to image                                                                                                                                                                          12.7s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:93c6f16b24a9773df407f26bebe07ce85c5ec361d83d9743abac62774bddf4a6                                                                                                0.0s
+ => => exporting config sha256:ded3451c654e01422e23e98d0cfc2ae7d418071761123960a4ee116298a427ca                                                                                                  0.0s
+ => => exporting manifest sha256:2fb9e7704a0f5e8d1cd6966328512a6d1d4cfd6211fb5308e125efbf7a62cdaa                                                                                                0.0s
+ => => exporting config sha256:a0ee45ef8f0131dff99e8a103ac7b40d65e0a53a8d5a7eeb86862c8b63294824                                                                                                  0.0s
+ => => exporting manifest list sha256:d803f44c706abf0bda7b7e9194ae35382535bfa176a3bbef09b4f25ceb748529                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                           10.5s
+ => => pushing manifest for quay.io/olmqe/olm-index:OLM-2378-Oadp-GoodOne@sha256:d803f44c706abf0bda7b7e9194ae35382535bfa176a3bbef09b4f25ceb748529                                                2.1s
+ => [auth] olmqe/olm-index:pull,push token for quay.io                                                                                                                                           0.0s
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % cat indexcsvfail.Dockerfile
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs"]
+
+# Copy declarative config root into image at /configs
+ADD indexcsvfail /configs
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % docker buildx build . --push --platform linux/amd64,linux/arm64 -f indexcsvfail.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail
+[+] Building 6.4s (10/10) FINISHED                                                                                                                                                                    
+ => [internal] load build definition from indexcsvfail.Dockerfile                                                                                                                                0.0s
+ => => transferring dockerfile: 515B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [linux/arm64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               1.0s
+ => [linux/amd64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               1.0s
+ => CACHED [linux/amd64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 427.77kB                                                                                                                                                            0.0s
+ => CACHED [linux/arm64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => [linux/arm64 2/2] ADD indexcsvfail /configs                                                                                                                                                  0.0s
+ => [linux/amd64 2/2] ADD indexcsvfail /configs                                                                                                                                                  0.0s
+ => exporting to image                                                                                                                                                                           4.7s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:c055b432d9a2c2dd228a778880709f23b097d6d8e5f8d725fe5e6cff3af22550                                                                                                0.0s
+ => => exporting config sha256:6b564edc550cce0bb181c80b1d8c5731504812655a1e2a7b03f3dd2e8e2beef6                                                                                                  0.0s
+ => => exporting manifest sha256:c3e5a26dae4a8f0e75689af017278433e48ca4e3ae917a1ed404c7aa7626e750                                                                                                0.0s
+ => => exporting config sha256:f4353a8a628e949114989230ed9bfe2fcdd89fdb360d07bf928a6765cf10fd0c                                                                                                  0.0s
+ => => exporting manifest list sha256:163ddd0c5a38c842b9882f66a2791228727f3f6c4ae7b04bb721f668ab865ec4                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            2.5s
+ => => pushing manifest for quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail@sha256:163ddd0c5a38c842b9882f66a2791228727f3f6c4ae7b04bb721f668ab865ec4                                                2.1s
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % cat indexipfailTwo.Dockerfile 
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs"]
+
+# Copy declarative config root into image at /configs
+ADD indexipfailTwo /configs
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % docker buildx build . --push --platform linux/amd64,linux/arm64 -f indexipfailTwo.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo
+[+] Building 5.7s (10/10) FINISHED                                                                                                                                                                    
+ => [internal] load build definition from indexipfailTwo.Dockerfile                                                                                                                              0.0s
+ => => transferring dockerfile: 519B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [linux/arm64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               1.0s
+ => [linux/amd64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               1.0s
+ => CACHED [linux/amd64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => CACHED [linux/arm64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 16.79kB                                                                                                                                                             0.0s
+ => [linux/amd64 2/2] ADD indexipfailTwo /configs                                                                                                                                                0.0s
+ => [linux/arm64 2/2] ADD indexipfailTwo /configs                                                                                                                                                0.0s
+ => exporting to image                                                                                                                                                                           4.2s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:6eda7beadf1724a490af3348a9ab49c7604608e479da67128d0402ed0bf57cda                                                                                                0.0s
+ => => exporting config sha256:d8b4ec4a2c1f93198582643fa7af1713147ab4dd572d4d8eb0b36081540e6046                                                                                                  0.0s
+ => => exporting manifest sha256:255d1892ad538f547f4dc3650cfad30bd3bc1f5bd2de661563e1a5f50cd04bd1                                                                                                0.0s
+ => => exporting config sha256:f22f21411183ed462401dbea2063869eca2472654c60fac36dc73be4579c3cc5                                                                                                  0.0s
+ => => exporting manifest list sha256:4a67749de737564524fc89f55d7f40724cbacd30875b3a32e3c8131d0a4fb496                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            2.0s
+ => => pushing manifest for quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo@sha256:4a67749de737564524fc89f55d7f40724cbacd30875b3a32e3c8131d0a4fb496                                              2.1s
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % 
+
+
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % cat indexipfailskip.Dockerfile 
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs"]
+
+# Copy declarative config root into image at /configs
+ADD indexipfailskip /configs
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % docker buildx build . --push --platform linux/amd64,linux/arm64 -f indexipfailskip.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip
+[+] Building 6.0s (10/10) FINISHED                                                                                                                                                                    
+ => [internal] load build definition from indexipfailskip.Dockerfile                                                                                                                             0.0s
+ => => transferring dockerfile: 521B                                                                                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                  0.0s
+ => [linux/arm64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               1.0s
+ => [linux/amd64 internal] load metadata for quay.io/operator-framework/opm:latest                                                                                                               0.9s
+ => CACHED [linux/arm64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => CACHED [linux/amd64 1/2] FROM quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                  0.0s
+ => => resolve quay.io/operator-framework/opm:latest@sha256:1a40a7aa6058ac3f2c6ab78526656681eff9303a9f325071c0512e90a82fc240                                                                     0.0s
+ => [internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 221.96kB                                                                                                                                                            0.0s
+ => [linux/arm64 2/2] ADD indexipfailskip /configs                                                                                                                                               0.1s
+ => [linux/amd64 2/2] ADD indexipfailskip /configs                                                                                                                                               0.0s
+ => exporting to image                                                                                                                                                                           4.5s
+ => => exporting layers                                                                                                                                                                          0.1s
+ => => exporting manifest sha256:ff3709bcaef79b1bb52de75f90073dfbb8a6a815caee1c9caae9493f38fd09fa                                                                                                0.0s
+ => => exporting config sha256:9d8114f8f034a7fe1024477fefebad227aba2d65e6ba9f6b50c653b870dcb4aa                                                                                                  0.0s
+ => => exporting manifest sha256:6be5b6359f5db0d23bb34428a250f91fc3fba6c60bdafb60de20d4d8c8fdab68                                                                                                0.0s
+ => => exporting config sha256:8b2517dcc332f3441a82f60431eff3d230594257d314e0b05f740ff633f1c5de                                                                                                  0.0s
+ => => exporting manifest list sha256:b3f9916a3c95696ce92dbdc8d5ba1a863a78090878730fdb1d1750c14b725e0d                                                                                           0.0s
+ => => pushing layers                                                                                                                                                                            2.3s
+ => => pushing manifest for quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip@sha256:b3f9916a3c95696ce92dbdc8d5ba1a863a78090878730fdb1d1750c14b725e0d                                             2.0s
+kuiwang@Kuis-MacBook-Pro oadp-quay-mularch % 
+
+
+

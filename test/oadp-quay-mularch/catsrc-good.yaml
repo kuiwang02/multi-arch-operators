@@ -1,0 +1,16 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: olm-2378-catalog
+  namespace: default
+spec:
+  displayName: OLM 2378 Operator Catalog
+  image: quay.io/olmqe/olm-index:OLM-2378-Oadp-Good
+  icon:
+    base64data: ""
+    mediatype: ""
+  publisher: QE
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 10m0s

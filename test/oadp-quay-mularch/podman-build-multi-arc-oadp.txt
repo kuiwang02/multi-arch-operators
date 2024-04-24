@@ -1,0 +1,1198 @@
+[root@preserve-olm-env2 oadp-operator]# opm alpha bundle generate -d 0.5.3/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/cases/OLM-2378/oadp-quay-mularch/oadp-operator/0.5.3/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/cases/OLM-2378/oadp-quay-mularch/oadp-operator 
+[root@preserve-olm-env2 oadp-operator]# podman build --platform linux/amd64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> e11f203ebb1d
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> ea791adf3349
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> d9f4f31bb698
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> 1db598852ac3
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> d9d4a3612801
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> 442f3411f985
+STEP 8/9: COPY 0.5.3/manifests /manifests/
+--> 0f3f547798be
+STEP 9/9: COPY 0.5.3/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+--> 9142bf8bbc31
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+[root@preserve-olm-env2 oadp-operator]# podman build --platform linux/arm64 -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e11f203ebb1d2fd167addb7086b12318ae12361c1e7efcc36e386200de1ee109
+--> e11f203ebb1d
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache ea791adf3349d742fc4dd0aee4e2f31053516fc10ab5a1f2023719e53797a54a
+--> ea791adf3349
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache d9f4f31bb69891248a2ae71b43fab40315cc0f0639e09332d39e60f5f8e4edc3
+--> d9f4f31bb698
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 1db598852ac33672f32fe2ae9d504c75ba40c44ac9a1f8950afa79ce47f8bfdf
+--> 1db598852ac3
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache d9d4a3612801a5a804e82bb3eb9de4ca803e520d969ad98475f9d65cb3bec10b
+--> d9d4a3612801
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache 442f3411f9851161f60cb4dd1726ce027fcf00ec8c670429b345ae0699c68814
+--> 442f3411f985
+STEP 8/9: COPY 0.5.3/manifests /manifests/
+--> Using cache 0f3f547798beabd76cb3cdb2249e59b7cd54454b0aa7475857ac5479e018556b
+--> 0f3f547798be
+STEP 9/9: COPY 0.5.3/metadata /metadata/
+--> Using cache 9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+COMMIT quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+--> 9142bf8bbc31
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+[root@preserve-olm-env2 oadp-operator]# podman build --platform linux/ppc64le -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e11f203ebb1d2fd167addb7086b12318ae12361c1e7efcc36e386200de1ee109
+--> e11f203ebb1d
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache ea791adf3349d742fc4dd0aee4e2f31053516fc10ab5a1f2023719e53797a54a
+--> ea791adf3349
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache d9f4f31bb69891248a2ae71b43fab40315cc0f0639e09332d39e60f5f8e4edc3
+--> d9f4f31bb698
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 1db598852ac33672f32fe2ae9d504c75ba40c44ac9a1f8950afa79ce47f8bfdf
+--> 1db598852ac3
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache d9d4a3612801a5a804e82bb3eb9de4ca803e520d969ad98475f9d65cb3bec10b
+--> d9d4a3612801
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache 442f3411f9851161f60cb4dd1726ce027fcf00ec8c670429b345ae0699c68814
+--> 442f3411f985
+STEP 8/9: COPY 0.5.3/manifests /manifests/
+--> Using cache 0f3f547798beabd76cb3cdb2249e59b7cd54454b0aa7475857ac5479e018556b
+--> 0f3f547798be
+STEP 9/9: COPY 0.5.3/metadata /metadata/
+--> Using cache 9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+COMMIT quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le
+--> 9142bf8bbc31
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+[root@preserve-olm-env2 oadp-operator]# podman build --platform linux/s390x -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.3-2378-s390x
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e11f203ebb1d2fd167addb7086b12318ae12361c1e7efcc36e386200de1ee109
+--> e11f203ebb1d
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache ea791adf3349d742fc4dd0aee4e2f31053516fc10ab5a1f2023719e53797a54a
+--> ea791adf3349
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache d9f4f31bb69891248a2ae71b43fab40315cc0f0639e09332d39e60f5f8e4edc3
+--> d9f4f31bb698
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 1db598852ac33672f32fe2ae9d504c75ba40c44ac9a1f8950afa79ce47f8bfdf
+--> 1db598852ac3
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache d9d4a3612801a5a804e82bb3eb9de4ca803e520d969ad98475f9d65cb3bec10b
+--> d9d4a3612801
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache 442f3411f9851161f60cb4dd1726ce027fcf00ec8c670429b345ae0699c68814
+--> 442f3411f985
+STEP 8/9: COPY 0.5.3/manifests /manifests/
+--> Using cache 0f3f547798beabd76cb3cdb2249e59b7cd54454b0aa7475857ac5479e018556b
+--> 0f3f547798be
+STEP 9/9: COPY 0.5.3/metadata /metadata/
+--> Using cache 9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+COMMIT quay.io/olmqe/oadp-operator:v0.5.3-2378-s390x
+--> 9142bf8bbc31
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-s390x
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+9142bf8bbc31ac14acddbb85ef89fea3dc036848606beaeb2afcd9178fa754f4
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378-s390x quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64 quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+Error: accepts between 1 and 2 arg(s), received 4
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378-s390x
+Getting image source signatures
+Copying blob 2b28fc0a1523 done  
+Copying blob 559c59bd6dc9 done  
+Copying config 9142bf8bbc done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378-ppc64le
+Getting image source signatures
+Copying blob 4c4591a5c6a6 skipped: already exists  
+Copying blob 7fe451739d29 skipped: already exists  
+Copying config 9142bf8bbc done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378-arm64
+Getting image source signatures
+Copying blob 7fe451739d29 skipped: already exists  
+Copying blob 4c4591a5c6a6 skipped: already exists  
+Copying config 9142bf8bbc done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.3-2378-amd64
+Getting image source signatures
+Copying blob 4c4591a5c6a6 skipped: already exists  
+Copying blob 7fe451739d29 skipped: already exists  
+Copying config 9142bf8bbc done  
+Writing manifest to image destination
+Storing signatures
+
+
+
+
+
+
+
+[root@preserve-olm-env2 oadp-quay-mularch]# cat indexcsvfail.Dockerfile
+# The base image is expected to contain
+# /bin/opm (with a serve subcommand) and /bin/grpc_health_probe
+FROM quay.io/operator-framework/opm:latest
+
+# Configure the entrypoint and command
+ENTRYPOINT ["/bin/opm"]
+CMD ["serve", "/configs"]
+
+# Copy declarative config root into image at /configs
+ADD indexcsvfail /configs
+
+# Set DC-specific label for the location of the DC root directory
+# in the image
+LABEL operators.operatorframework.io.index.configs.v1=/configs
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/amd64 -f indexcsvfail.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e done  
+Copying blob 960043b8858c done  
+Copying blob 0f8b424aa0b9 done  
+Copying blob 5c984a731132 done  
+Copying blob fc6336cdd860 done  
+Copying blob d557676654e5 done  
+Copying blob d858cbc252ad done  
+Copying blob 1069fc2daed1 done  
+Copying blob b40161cd83fc done  
+Copying blob 5318d93a3a65 done  
+Copying blob 307c1adadb60 done  
+Copying blob f65b95459c9b done  
+Copying blob 5391af8231d5 done  
+Copying blob 69b07307421b done  
+Copying blob da3f8b41d0f1 done  
+Copying config 9a5e30067f done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> f82feab5f3cd
+STEP 3/5: CMD ["serve", "/configs"]
+--> 32349da50d3a
+STEP 4/5: ADD indexcsvfail /configs
+--> e835fa1e4ff6
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64
+--> e697e9cb4219
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64
+e697e9cb4219dacacb7dead5d6f0032f62ca9395997bc736584b5c7a7482f9b3
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/arm64 -f indexcsvfail.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob ac1099dcb77c done  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 5f5c84767a79 done  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob ffeccacd1a73 done  
+Copying blob 772f32d35625 done  
+Copying blob de01c1a5eadd done  
+Copying config f031d0aa2b done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> afecac78af68
+STEP 3/5: CMD ["serve", "/configs"]
+--> a2749bebb04a
+STEP 4/5: ADD indexcsvfail /configs
+--> a194725dc217
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64
+--> 26683ebf3ca0
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64
+26683ebf3ca0207dc8247df10daaea621aaf0b67f69d196a1b0be5dd61aed10f
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/ppc64le -f indexcsvfail.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0272751400f9 done  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob c57d5d2ad608 done  
+Copying blob a687673dc573 done  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c2baeedc5f09 done  
+Copying config a1fab8744a done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 04d94f87f018
+STEP 3/5: CMD ["serve", "/configs"]
+--> b48654d8beec
+STEP 4/5: ADD indexcsvfail /configs
+--> 27a559f71b82
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+--> fec35a395707
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+fec35a395707ce29c2218fb0ad7343a66c6363407a8783ff7451ee1baa0c86d6
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/s390x -f indexcsvfail.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob aaa6556a5dd9 done  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 0cf0b3c81e28 done  
+Copying blob 8f83def55eec done  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 done  
+Copying config 12a9d18c1e done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 706b3a693451
+STEP 3/5: CMD ["serve", "/configs"]
+--> d293d13c29f9
+STEP 4/5: ADD indexcsvfail /configs
+--> 39b328150ad2
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x
+--> f40bef2ef24d
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x
+f40bef2ef24d25e1bfa1b47df92e689e73d0d6e1af20e32ec55157f1f34061be
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 47dc70430206 done  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying config f40bef2ef2 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+Getting image source signatures
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob b98f5c9def76 done  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying config fec35a3957 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64
+Getting image source signatures
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 1c9b35d87fa8 done  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying config 26683ebf3c done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64
+Getting image source signatures
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 8171ba2f1da9 done  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying config e697e9cb42 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest create quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-multi quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+3fbda07a7f51a57f94fb7f026ba54f6365636d2be6c32257a199671d7dae5f70
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest push quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-multi docker://quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-multi
+Getting image list signatures
+Copying 4 of 4 images in list
+Copying image sha256:fccf53cf0b87447d651913bde716381efa0a40608f781f0536a18aa061e876d1 (1/4)
+Getting image source signatures
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying blob 2bbeacb64c6f skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying config e697e9cb42 done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:d68ba238b7687179593f5f8775ce67bc60897856847ce0850b0ff8cfaaa0eebb (2/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob 67d378a28085 skipped: already exists  
+Copying config 26683ebf3c done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:96246f08dc0de8d8eff4cfe5a1d084f6283d5e2bf82d82320d90f0381fa688a2 (3/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying blob 8e1cda6c5ca3 skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying config f40bef2ef2 done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:67054838c2c1bf2b0c4eb577d7e7b9010d68a8fe2abcf4630b63e0ed627a6206 (4/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying blob 0dc842d1e6e9 skipped: already exists  
+Copying config fec35a3957 done  
+Writing manifest to image destination
+Storing signatures
+Writing manifest list to image destination
+Storing list signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest rm quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-multi
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-multi
+Deleted: 3fbda07a7f51a57f94fb7f026ba54f6365636d2be6c32257a199671d7dae5f70
+[root@preserve-olm-env2 oadp-quay-mularch]# podman rmi quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-amd64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-arm64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-s390x
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-csvfail-ppc64le
+Deleted: e697e9cb4219dacacb7dead5d6f0032f62ca9395997bc736584b5c7a7482f9b3
+Deleted: e835fa1e4ff6b0839c5f112407eb762406535ae0aa3bd628e68ed40f49ed6993
+Deleted: 32349da50d3a8f1a69ad4fbdabd895433b110e4507292910aad201065b594793
+Deleted: f82feab5f3cd7c12001831b6818b152624eec018cd10eebba08c6f02e013f938
+Deleted: 9a5e30067f253ce36701dec162c694d98f45e1081ee3bb33915f078f1d6bb28f
+Deleted: 26683ebf3ca0207dc8247df10daaea621aaf0b67f69d196a1b0be5dd61aed10f
+Deleted: a194725dc217651ffd5e524d42127825bcf9da57c6a4b2c2ffb41ae371819df7
+Deleted: a2749bebb04a383d9c792a7db1d0a6043b5e088d9e781718f096dc6bee4338a8
+Deleted: afecac78af68401d8e43ca37c075c5028780b2c337d0b4772c2149c7ff8c2949
+Deleted: f031d0aa2b1372b22ee154aadc514accad1fc54f8fdf7cebf3e30ad686be532d
+Deleted: f40bef2ef24d25e1bfa1b47df92e689e73d0d6e1af20e32ec55157f1f34061be
+Deleted: 39b328150ad224e12331a7200daafbbcb0b936de4682a31ca11972e13303e439
+Deleted: d293d13c29f93eaa1598ad4a29af0cbf98a2a3c98062b5c2e7849143c58ce1ce
+Deleted: 706b3a6934513b65b40365f36dbaa8eaf3206016b18805260b244da983aca64c
+Deleted: fec35a395707ce29c2218fb0ad7343a66c6363407a8783ff7451ee1baa0c86d6
+Deleted: 27a559f71b82c69e89c158dc1230a08af8e9f7023788eb20895a455c15a8b8bf
+Deleted: b48654d8beec2c1e757619ad43840add1362cfa136385b0b9a0c3ae914732acd
+Deleted: 04d94f87f0189e39fef6f03f1d1dce80965f58c656b1ef9bf694845070b54f21
+Deleted: a1fab8744a82732a7e612279b325638c6dba04433f7f34f2fe8f7c46d3240a88
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+
+
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/amd64 -f indexipfailTwo.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob fc6336cdd860 done  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob f65b95459c9b done  
+Copying blob 5391af8231d5 done  
+Copying blob da3f8b41d0f1 done  
+Copying config 9a5e30067f done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 813e3da9e5df
+STEP 3/5: CMD ["serve", "/configs"]
+--> ddb9635da91f
+STEP 4/5: ADD indexipfailTwo /configs
+--> 723b70be6140
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64
+--> b39e6d44d224
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64
+b39e6d44d2244523abf6ff9d6f7465451a12f5a7b0d9a8cb28f6574147cbe1e6
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/arm64 -f indexipfailTwo.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob ac1099dcb77c done  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 772f32d35625 done  
+Copying blob ffeccacd1a73 done  
+Copying blob de01c1a5eadd done  
+Copying blob 5f5c84767a79 done  
+Copying config f031d0aa2b done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 8fae9e7f415d
+STEP 3/5: CMD ["serve", "/configs"]
+--> ae3d52b0b7a4
+STEP 4/5: ADD indexipfailTwo /configs
+--> 91c5c9cdecd2
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64
+--> bdaef12e2b57
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64
+bdaef12e2b5709ffa7f57cbbdc47505f35f45991954df988c6016ca24c172115
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/ppc64le -f indexipfailTwo.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 0272751400f9 done  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c57d5d2ad608 done  
+Copying blob a687673dc573 done  
+Copying blob c2baeedc5f09 done  
+Copying config a1fab8744a done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 7509a142a1be
+STEP 3/5: CMD ["serve", "/configs"]
+--> c3cfd0aacc59
+STEP 4/5: ADD indexipfailTwo /configs
+--> 523deba9fb00
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le
+--> cbf3c2994cd3
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le
+cbf3c2994cd37109b3a45bb5f5a32ac683aee65f7e6e44a8ca8a36ad8ea7e038
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/s390x -f indexipfailTwo.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying config 12a9d18c1e done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 6983f6069ffa
+STEP 3/5: CMD ["serve", "/configs"]
+--> c215a71480d4
+STEP 4/5: ADD indexipfailTwo /configs
+--> ac93e366d278
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+--> 01c4e8ba0da6
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+01c4e8ba0da60cda85e4857e99e9e876d41730dd469216f68a4f03625151b824
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob c673cbf1b06d done  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying config 01c4e8ba0d done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le
+Getting image source signatures
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob cf208e0549d1 done  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying config cbf3c2994c done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64
+Getting image source signatures
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 4f273d888543 done  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying config bdaef12e2b done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64
+Getting image source signatures
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 7959b9b7f352 done  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying config b39e6d44d2 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest create quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-multi quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+8093c06aa44605e80c9d1aa436e1d71f17f2ed63531be960be5effa1a1e59dca
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-multi docker://quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-multi
+Getting image list signatures
+Copying 4 of 4 images in list
+Copying image sha256:4926045be56570d308b487cc681e84524a212a27961a06534e5c8dc2a59a39b5 (1/4)
+Getting image source signatures
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 0056e046bc62 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying config b39e6d44d2 done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:bfd7887952f8bf049878d89f552b4dc5a66fda47b54e393b1f1755c4aaf3c566 (2/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 7ec3be83fbc7 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying config bdaef12e2b done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:62cf19a65186c8ab9eeea77ae211dda9b1cf1a94e0a730d4a46cc1e72ac976fa (3/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob a35a21fdec69 skipped: already exists  
+Copying config cbf3c2994c done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:7b4f3d81fad3c6d0362767f70f24fe0adbbccd0caa29bdb61cdf24316789be33 (4/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying blob 35f00a68e278 skipped: already exists  
+Copying config 01c4e8ba0d done  
+Writing manifest to image destination
+Storing signatures
+Writing manifest list to image destination
+Storing list signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest rm quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-multi
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-multi
+Deleted: 8093c06aa44605e80c9d1aa436e1d71f17f2ed63531be960be5effa1a1e59dca
+[root@preserve-olm-env2 oadp-quay-mularch]# podman rmi quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-amd64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-arm64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-ppc64le
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailTwo-s390x
+Deleted: b39e6d44d2244523abf6ff9d6f7465451a12f5a7b0d9a8cb28f6574147cbe1e6
+Deleted: 723b70be61406b7805243a840613e9e01dda63dd579aa1445fc3b832747ecbdd
+Deleted: ddb9635da91fecf1b4fd4c500789b622083f4ffb46d4e3754dac094bb50d7a93
+Deleted: 813e3da9e5df6248171e4649c925ebc6019c12884261ad638cafa9cc2c35d6ed
+Deleted: 9a5e30067f253ce36701dec162c694d98f45e1081ee3bb33915f078f1d6bb28f
+Deleted: bdaef12e2b5709ffa7f57cbbdc47505f35f45991954df988c6016ca24c172115
+Deleted: 91c5c9cdecd2e56a4f1dc99d37f818e480f1613c8903dedba77c58785b2ee768
+Deleted: ae3d52b0b7a46c31aff028570a96255bf8edf0d8eef46ab9f7c4588cc5810577
+Deleted: 8fae9e7f415ddeb018a8c28d224ad6abfec52badbfaf75f2cdf5c2265e0d3e21
+Deleted: f031d0aa2b1372b22ee154aadc514accad1fc54f8fdf7cebf3e30ad686be532d
+Deleted: cbf3c2994cd37109b3a45bb5f5a32ac683aee65f7e6e44a8ca8a36ad8ea7e038
+Deleted: 523deba9fb00e981256eb7d083bf7263be3aa4e136d86f37a9d13423db937564
+Deleted: c3cfd0aacc59485ea8200632e30f9e5ed176c3489ad47fdcaf38098999dccbf7
+Deleted: 7509a142a1be7d2225a33e71d0c6601d9c9af36845fbbd44610501fffb2369da
+Deleted: a1fab8744a82732a7e612279b325638c6dba04433f7f34f2fe8f7c46d3240a88
+Deleted: 01c4e8ba0da60cda85e4857e99e9e876d41730dd469216f68a4f03625151b824
+Deleted: ac93e366d2785180d464606131c395eb6d5b5b4b1fa1a640da4465e2ad5f32a0
+Deleted: c215a71480d49240dafeca4df4d8633e271794eaa9faea91a19d6a3d420d3e29
+Deleted: 6983f6069ffacf4577cf13654d1ee431f1068f48b3201758b619d57ffd4b64c2
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+
+
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/amd64 -f indexipfailskip.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob fc6336cdd860 done  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5391af8231d5 done  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob f65b95459c9b done  
+Copying blob da3f8b41d0f1 done  
+Copying config 9a5e30067f done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 5138a774d45b
+STEP 3/5: CMD ["serve", "/configs"]
+--> 52259bac1d1c
+STEP 4/5: ADD indexipfailskip /configs
+--> 1c4ac1306cb4
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64
+--> d1d27c9a3c01
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64
+d1d27c9a3c01787f3636c25d3e78ce62053a1135f2b18291dafd44bdde2e1778
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/arm64 -f indexipfailskip.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob ac1099dcb77c done  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 772f32d35625 done  
+Copying blob 5f5c84767a79 done  
+Copying blob ffeccacd1a73 done  
+Copying blob de01c1a5eadd done  
+Copying config f031d0aa2b done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 2c739c1120db
+STEP 3/5: CMD ["serve", "/configs"]
+--> aa3ebcb4ac8a
+STEP 4/5: ADD indexipfailskip /configs
+--> e768e9cb78dd
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64
+--> 931e7a8c42ac
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64
+931e7a8c42ac2a2c1a3b15ed38eddf6c9be8c8f94fad54760dcb6878833f6562
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/ppc64le -f indexipfailskip.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0272751400f9 done  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c2baeedc5f09 done  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob c57d5d2ad608 done  
+Copying blob a687673dc573 done  
+Copying config a1fab8744a done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> 8c4d1bae1cfd
+STEP 3/5: CMD ["serve", "/configs"]
+--> 586947dca1df
+STEP 4/5: ADD indexipfailskip /configs
+--> 80baac456cd7
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le
+--> a89cb07893d0
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le
+a89cb07893d07bb6e10f629b00e3d5e7d7f79d5c3d508bc3917cf966784f8740
+[root@preserve-olm-env2 oadp-quay-mularch]# podman build --platform linux/s390x -f indexipfailskip.Dockerfile -t quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+STEP 1/5: FROM quay.io/operator-framework/opm:latest
+Trying to pull quay.io/operator-framework/opm:latest...
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying config 12a9d18c1e done  
+Writing manifest to image destination
+Storing signatures
+STEP 2/5: ENTRYPOINT ["/bin/opm"]
+--> e55219aea44f
+STEP 3/5: CMD ["serve", "/configs"]
+--> 37e7b6eac910
+STEP 4/5: ADD indexipfailskip /configs
+--> 33d421c05176
+STEP 5/5: LABEL operators.operatorframework.io.index.configs.v1=/configs
+COMMIT quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+--> e75865d90c03
+Successfully tagged quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+e75865d90c038c278472543ffec51c28136a4571bd82e95367585ba29bb2a88f
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+Getting image source signatures
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 28625ef554a1 done  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying config e75865d90c done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le
+Getting image source signatures
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 702a2cc10788 done  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying config a89cb07893 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64
+Getting image source signatures
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 533749634774 done  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying config 931e7a8c42 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64
+Getting image source signatures
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob bf4d30b16611 done  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying config d1d27c9a3c done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest create quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-multi quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+00cf162f178ee35700227e5f8dbfa47847c73fea124e55f9d92bbd5e73e89214
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest push quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-multi docker://quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-multi
+Getting image list signatures
+Copying 4 of 4 images in list
+Copying image sha256:404a7f3b7bc714dbe1a79df0912d6aac20c8d281734a823d660de626db6b9754 (1/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5391af8231d5 skipped: already exists  
+Copying blob fc6336cdd860 skipped: already exists  
+Copying blob f65b95459c9b skipped: already exists  
+Copying blob da3f8b41d0f1 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 0ce3dc274d2e skipped: already exists  
+Copying config d1d27c9a3c done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:75fd607e716ea3d2a8b3c92a2ff833ebda86de3c70d7ddec3db5f56b6a0170b9 (2/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob ac1099dcb77c skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 772f32d35625 skipped: already exists  
+Copying blob ffeccacd1a73 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob de01c1a5eadd skipped: already exists  
+Copying blob a8d7c0d793f0 skipped: already exists  
+Copying config 931e7a8c42 done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:005f6f15667bf3c5cc658dc95df347ceef176e9d301b135fb43c2fe86f9ceec1 (3/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob 0272751400f9 skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 5f5c84767a79 skipped: already exists  
+Copying blob c57d5d2ad608 skipped: already exists  
+Copying blob a687673dc573 skipped: already exists  
+Copying blob 17a3ddd4db7e skipped: already exists  
+Copying blob c2baeedc5f09 skipped: already exists  
+Copying config a89cb07893 done  
+Writing manifest to image destination
+Storing signatures
+Copying image sha256:36eb5de9abb3b1fbdb0eed26946b28f8b61291a451d206ed40340c306d059acd (4/4)
+Getting image source signatures
+Copying blob c8022d07192e skipped: already exists  
+Copying blob aaa6556a5dd9 skipped: already exists  
+Copying blob 960043b8858c skipped: already exists  
+Copying blob d557676654e5 skipped: already exists  
+Copying blob 5c984a731132 skipped: already exists  
+Copying blob 0f8b424aa0b9 skipped: already exists  
+Copying blob 1069fc2daed1 skipped: already exists  
+Copying blob d858cbc252ad skipped: already exists  
+Copying blob b40161cd83fc skipped: already exists  
+Copying blob 307c1adadb60 skipped: already exists  
+Copying blob 5318d93a3a65 skipped: already exists  
+Copying blob 69b07307421b skipped: already exists  
+Copying blob 0cf0b3c81e28 skipped: already exists  
+Copying blob 8f83def55eec skipped: already exists  
+Copying blob 4e79156f1a59 skipped: already exists  
+Copying blob c118890e4944 skipped: already exists  
+Copying config e75865d90c done  
+Writing manifest to image destination
+Storing signatures
+Writing manifest list to image destination
+Storing list signatures
+[root@preserve-olm-env2 oadp-quay-mularch]# podman manifest rm quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-multi
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-multi
+Deleted: 00cf162f178ee35700227e5f8dbfa47847c73fea124e55f9d92bbd5e73e89214
+[root@preserve-olm-env2 oadp-quay-mularch]# podman rmi quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64 quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-amd64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-arm64
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-ppc64le
+Untagged: quay.io/olmqe/olm-index:OLM-2378-Oadp-ipfailskip-s390x
+Deleted: d1d27c9a3c01787f3636c25d3e78ce62053a1135f2b18291dafd44bdde2e1778
+Deleted: 1c4ac1306cb4259fae1a483447d69590181f8869ab4d8bbd4b79acced7054fa2
+Deleted: 52259bac1d1c5502bd2380387e6e7dbbf17e466e32f9110835bb7867d543638e
+Deleted: 5138a774d45b000eb480dd60d387468ad643b1e0db5a5284748928264b327023
+Deleted: 9a5e30067f253ce36701dec162c694d98f45e1081ee3bb33915f078f1d6bb28f
+Deleted: 931e7a8c42ac2a2c1a3b15ed38eddf6c9be8c8f94fad54760dcb6878833f6562
+Deleted: e768e9cb78dd96408d6f5ead192143b66cf42738821621a79af0cefc3d1421df
+Deleted: aa3ebcb4ac8a97ac621bf08c6c9ef1b5db35954de7ef448e3aea622a17ffbd8f
+Deleted: 2c739c1120db0d6d749c225e248344f54280a7c3328fac25837ac0c7402ebfd3
+Deleted: f031d0aa2b1372b22ee154aadc514accad1fc54f8fdf7cebf3e30ad686be532d
+Deleted: a89cb07893d07bb6e10f629b00e3d5e7d7f79d5c3d508bc3917cf966784f8740
+Deleted: 80baac456cd7c1432fe1cf7bffd64584ddd1e1a6292baa75354aa7cee8458209
+Deleted: 586947dca1df20a734bd0a78bf8e6120e3ed31e3bd1344acd6d500b5b3fd092d
+Deleted: 8c4d1bae1cfd196d0a34190dc0ba1d50bbbdfec42869bd6ae5b2eb930d5eb1c6
+Deleted: a1fab8744a82732a7e612279b325638c6dba04433f7f34f2fe8f7c46d3240a88
+Deleted: e75865d90c038c278472543ffec51c28136a4571bd82e95367585ba29bb2a88f
+Deleted: 33d421c051761d5f43d3d00308602308683f1c0e2815e7decf06467d02b751b1
+Deleted: 37e7b6eac91084f263d93654421ab3015ece3db31dd8babcea305fa32511de25
+Deleted: e55219aea44f80d105d61a2a5addd10097da5c8d35e9712d2e84b4a3df52946f
+[root@preserve-olm-env2 oadp-quay-mularch]# 
+
+
