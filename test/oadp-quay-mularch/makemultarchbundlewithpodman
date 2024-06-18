@@ -1,0 +1,253 @@
+root@preserve-olm-env2 oadp-operator]# opm alpha bundle generate -d 0.5.4/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator/0.5.4/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator 
+[root@preserve-olm-env2 oadp-operator]# ls -lrt
+total 8
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.2.3
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.2.5
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.2.6
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.4.0
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.3.0
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.4.1
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.4.2
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.5.0
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.5.1
+drwxr-xr-x. 3 root root  23 May 20 11:07 0.5.3
+drwxr-xr-x. 4 root root  39 May 20 11:07 0.5.2
+drwxr-xr-x. 3 root root  23 May 20 11:07 0.5.4-csvfail
+drwxr-xr-x. 3 root root  23 May 20 11:07 0.5.5-ipfail
+drwxr-xr-x. 3 root root  23 May 20 11:07 0.5.5
+drwxr-xr-x. 3 root root  23 May 20 11:07 0.5.6
+-rw-r--r--. 1 root root 258 May 20 11:07 ci.yaml
+-rw-r--r--. 1 root root 482 Jun 18 10:22 bundle.Dockerfile
+drwxr-xr-x. 4 root root  39 Jun 18 10:22 0.5.4
+[root@preserve-olm-env2 oadp-operator]# cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.4/manifests /manifests/
+COPY 0.5.4/metadata /metadata/
+
+
+[root@preserve-olm-env2 oadp-operator]# podman build  -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.4-2378-multis
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e8d114909e86bf7b52587733684098c01c30e5dc2d5371b9219fa839923d539a
+--> e8d114909e86
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 8f7d216036ad3311ccfd9e24762fe7a76eb835e0244c2e071e5f6e533e641bfb
+--> 8f7d216036ad
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache ac68be119fbb0c4e832991f2452432d50f2d55f875da1d93b91057b5f1b2b23c
+--> ac68be119fbb
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 2f17b005d72271ed3bcbdb6104e3d7bec9194b670928ab3f4f1b88d0c1495a80
+--> 2f17b005d722
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache 5edd81cc9874427cb53dd9c42ed941b9966a4493d95213123a385b71e8cb20eb
+--> 5edd81cc9874
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache f1c2aa1b70ab5d2f2122535b49091b00458a0f32830463ff5a96f265d60f004b
+--> f1c2aa1b70ab
+STEP 8/9: COPY 0.5.4/manifests /manifests/
+--> Using cache 04de7176606c6ca7e251154b37829f01de8853060477b5eab287c75b55c4a353
+--> 04de7176606c
+STEP 9/9: COPY 0.5.4/metadata /metadata/
+--> Using cache 18d9dfd3af8af0e8fff55ba712db8bed1676e906064142ba31c394131aa2e6a0
+COMMIT quay.io/olmqe/oadp-operator:v0.5.4-2378-multis
+--> 18d9dfd3af8a
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-multis
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-multi
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-s390x
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-ppc64le
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-arm64
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-amd64
+18d9dfd3af8af0e8fff55ba712db8bed1676e906064142ba31c394131aa2e6a0
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.4-2378-multis
+Getting image source signatures
+Copying blob 432ca5781650 skipped: already exists  
+Copying blob 777ea979e85b skipped: already exists  
+Copying config 18d9dfd3af done  
+Writing manifest to image destination
+Storing signatures
+
+
+[root@preserve-olm-env2 oadp-operator]# rm -fr bundle.Dockerfile 0.5.4/metadata/
+
+
+
+[root@preserve-olm-env2 oadp-operator]# opm alpha bundle generate -d 0.5.4-csvfail/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator/0.5.4-csvfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator 
+[root@preserve-olm-env2 oadp-operator]# cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.4-csvfail/manifests /manifests/
+COPY 0.5.4-csvfail/metadata /metadata/
+[root@preserve-olm-env2 oadp-operator]# podman build  -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e8d114909e86bf7b52587733684098c01c30e5dc2d5371b9219fa839923d539a
+--> e8d114909e86
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 8f7d216036ad3311ccfd9e24762fe7a76eb835e0244c2e071e5f6e533e641bfb
+--> 8f7d216036ad
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache ac68be119fbb0c4e832991f2452432d50f2d55f875da1d93b91057b5f1b2b23c
+--> ac68be119fbb
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 2f17b005d72271ed3bcbdb6104e3d7bec9194b670928ab3f4f1b88d0c1495a80
+--> 2f17b005d722
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache 5edd81cc9874427cb53dd9c42ed941b9966a4493d95213123a385b71e8cb20eb
+--> 5edd81cc9874
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache f1c2aa1b70ab5d2f2122535b49091b00458a0f32830463ff5a96f265d60f004b
+--> f1c2aa1b70ab
+STEP 8/9: COPY 0.5.4-csvfail/manifests /manifests/
+--> 9511171ad7c5
+STEP 9/9: COPY 0.5.4-csvfail/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+--> 93afa9c24ee4
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+93afa9c24ee4bc9958c64cfaf2cf1dd674cfc5b1729eb9aab3ec8a399cf78b85
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.4-2378-csvfail
+Getting image source signatures
+Copying blob 595e7c544a82 done  
+Copying blob 9fdfc06f13b3 done  
+Copying config 93afa9c24e done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-operator]# rm -fr bundle.Dockerfile 0.5.4-csvfail/metadata/
+[root@preserve-olm-env2 oadp-operator]# 
+
+[root@preserve-olm-env2 oadp-operator]# opm alpha bundle generate -d 0.5.5-ipfail/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator/0.5.5-ipfail/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator 
+[root@preserve-olm-env2 oadp-operator]# cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.5-ipfail/manifests /manifests/
+COPY 0.5.5-ipfail/metadata /metadata/
+[root@preserve-olm-env2 oadp-operator]# podman build  -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e8d114909e86bf7b52587733684098c01c30e5dc2d5371b9219fa839923d539a
+--> e8d114909e86
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 8f7d216036ad3311ccfd9e24762fe7a76eb835e0244c2e071e5f6e533e641bfb
+--> 8f7d216036ad
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache ac68be119fbb0c4e832991f2452432d50f2d55f875da1d93b91057b5f1b2b23c
+--> ac68be119fbb
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 2f17b005d72271ed3bcbdb6104e3d7bec9194b670928ab3f4f1b88d0c1495a80
+--> 2f17b005d722
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache 5edd81cc9874427cb53dd9c42ed941b9966a4493d95213123a385b71e8cb20eb
+--> 5edd81cc9874
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache f1c2aa1b70ab5d2f2122535b49091b00458a0f32830463ff5a96f265d60f004b
+--> f1c2aa1b70ab
+STEP 8/9: COPY 0.5.5-ipfail/manifests /manifests/
+--> 25fa24c6de97
+STEP 9/9: COPY 0.5.5-ipfail/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+--> 1fdb0ca104cf
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+1fdb0ca104cfd77ed6447148e70c575d9f3ce01c92a5c71645042a3fe5c899bd
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.5-2378-ipfail
+Getting image source signatures
+Copying blob 0972481ccf57 done  
+Copying blob e31a39d0bab9 done  
+Copying config 1fdb0ca104 done  
+Writing manifest to image destination
+Storing signatures
+[root@preserve-olm-env2 oadp-operator]# rm -fr bundle.Dockerfile 0.5.5-ipfail/metadata/
+[root@preserve-olm-env2 oadp-operator]# 
+
+
+[root@preserve-olm-env2 oadp-operator]#  opm alpha bundle generate -d 0.5.6/manifests/ -p oadp-operator -c alpha -e alpha
+INFO[0000] Building annotations.yaml                    
+INFO[0000] Writing annotations.yaml in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator/0.5.6/metadata 
+INFO[0000] Building Dockerfile                          
+INFO[0000] Writing bundle.Dockerfile in /data/kuiwang/github/multi-arch-operators/test/oadp-quay-mularch/oadp-operator 
+[root@preserve-olm-env2 oadp-operator]# cat bundle.Dockerfile 
+FROM scratch
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+
+COPY 0.5.6/manifests /manifests/
+COPY 0.5.6/metadata /metadata/
+[root@preserve-olm-env2 oadp-operator]# podman build  -f bundle.Dockerfile -t quay.io/olmqe/oadp-operator:v0.5.6-2378
+STEP 1/9: FROM scratch
+STEP 2/9: LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+--> Using cache e8d114909e86bf7b52587733684098c01c30e5dc2d5371b9219fa839923d539a
+--> e8d114909e86
+STEP 3/9: LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+--> Using cache 8f7d216036ad3311ccfd9e24762fe7a76eb835e0244c2e071e5f6e533e641bfb
+--> 8f7d216036ad
+STEP 4/9: LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+--> Using cache ac68be119fbb0c4e832991f2452432d50f2d55f875da1d93b91057b5f1b2b23c
+--> ac68be119fbb
+STEP 5/9: LABEL operators.operatorframework.io.bundle.package.v1=oadp-operator
+--> Using cache 2f17b005d72271ed3bcbdb6104e3d7bec9194b670928ab3f4f1b88d0c1495a80
+--> 2f17b005d722
+STEP 6/9: LABEL operators.operatorframework.io.bundle.channels.v1=alpha
+--> Using cache 5edd81cc9874427cb53dd9c42ed941b9966a4493d95213123a385b71e8cb20eb
+--> 5edd81cc9874
+STEP 7/9: LABEL operators.operatorframework.io.bundle.channel.default.v1=alpha
+--> Using cache f1c2aa1b70ab5d2f2122535b49091b00458a0f32830463ff5a96f265d60f004b
+--> f1c2aa1b70ab
+STEP 8/9: COPY 0.5.6/manifests /manifests/
+--> aa92a5700ffd
+STEP 9/9: COPY 0.5.6/metadata /metadata/
+COMMIT quay.io/olmqe/oadp-operator:v0.5.6-2378
+--> 8bf7bd30b315
+Successfully tagged quay.io/olmqe/oadp-operator:v0.5.6-2378
+8bf7bd30b31532c16aa6a5c886a511961457e48e9dc07a8a8aaa4beb537c967f
+[root@preserve-olm-env2 oadp-operator]# podman push quay.io/olmqe/oadp-operator:v0.5.6-2378
+Getting image source signatures
+Copying blob 3e72a5c0bd00 done  
+Copying blob 54c2495ea255 done  
+Copying config 8bf7bd30b3 done  
+Writing manifest to image destination
+Storing signatures
+
+
+
+
+
+
+
