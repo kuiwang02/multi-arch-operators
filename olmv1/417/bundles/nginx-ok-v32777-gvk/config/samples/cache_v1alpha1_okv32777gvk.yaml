@@ -1,0 +1,12 @@
+apiVersion: cache.example.com/v1alpha1
+kind: Okv32777gvk
+metadata:
+  labels:
+    app.kubernetes.io/name: okv32777gvk
+    app.kubernetes.io/instance: okv32777gvk-sample
+    app.kubernetes.io/part-of: nginx-ok-v32777-gvk
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: nginx-ok-v32777-gvk
+  name: okv32777gvk-sample
+spec:
+  # TODO(user): Add fields here
